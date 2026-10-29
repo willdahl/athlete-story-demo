@@ -14,7 +14,7 @@ Cloud writes use optimistic versions. Browser storage remains a recovery copy wh
 
 ## Database installation
 
-`supabase/001_story_service.sql` is the prepared initial migration. It has NOT yet been applied. For CLI operation, initialize/link the project and place this SQL in a timestamped file under `supabase/migrations` before `db push`. Do not apply it through both the dashboard and CLI without reconciling migration history.
+`supabase/migrations/20261029190000_story_service.sql` is the prepared initial migration. It has NOT yet been applied. CLI 2.122.0 is pinned and initialized. Run `npm run db:login`, then `npm run db:link` to authenticate and link. `npm run db:plan` previews pending changes; `npm run db:deploy` applies them. Both push commands explicitly target pmxcsvvsdzrzmuokfjhk and skip vault updates. Do not apply it through both the dashboard and CLI without reconciling migration history.
 
 The Data API secret cannot run DDL. Deployment requires a database connection or authenticated Supabase management/CLI access. Runtime uses Sites-provided user identity; Supabase browser roles receive no access to these tables. RLS is enabled and direct access is restricted to service_role. The server must filter every record and storage path by verified Sites identity because service_role bypasses RLS.
 

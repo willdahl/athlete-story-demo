@@ -1,1 +1,17 @@
-{"name":"athlete-story-demo","private":true,"type":"module","scripts":{"test":"node --test test/*.test.mjs","preview":"python3 -m http.server 4180 --bind 127.0.0.1 --directory dist"}}
+{
+  "name": "athlete-story-demo",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "preview": "python3 -m http.server 4180 --bind 127.0.0.1 --directory dist",
+    "db:login": "supabase login",
+    "db:link": "supabase link --project-ref pmxcsvvsdzrzmuokfjhk",
+    "db:migrations": "supabase migration list --linked",
+    "db:plan": "supabase db push --project-ref pmxcsvvsdzrzmuokfjhk --dry-run --skip-vault",
+    "db:deploy": "supabase db push --project-ref pmxcsvvsdzrzmuokfjhk --skip-vault"
+  },
+  "devDependencies": {
+    "supabase": "2.122.0"
+  }
+}
