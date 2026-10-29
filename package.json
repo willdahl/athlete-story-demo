@@ -1,0 +1,1 @@
+{"name":"athlete-story-demo","private":true,"type":"module","scripts":{"test":"node --test test/*.test.mjs","preview":"python3 -m http.server 4180 --bind 127.0.0.1 --directory dist"}}
