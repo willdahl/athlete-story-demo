@@ -4,7 +4,7 @@ A judge-accessible prototype for turning an athletic event into a visual story: 
 
 ## Try it
 
-Open the GitHub Pages deployment linked in this repository's About section. Start a story about your own ride, run, hike or walk, or open a clearly labeled fictional cycling/hiking example. Try changing an answer, inspect source answers, edit a moment, approve it, attach a photo and preview the story. Reload to resume a saved story in the same browser.
+Open the hosted demo linked in this repository's About section once deployment is enabled. Start a story about your own ride, run, hike or walk, or open a clearly labeled fictional cycling/hiking example. Try changing an answer, inspect source answers, edit a moment, approve it, attach a photo and preview the story. Reload to resume a saved story in the same browser.
 
 ## What actually works
 
@@ -44,7 +44,7 @@ Open http://127.0.0.1:4180/ . Serve over HTTP instead of opening index.html dire
 - `test/`: behavior and provenance checks.
 - `.github/workflows/pages.yml`: checks and GitHub Pages deployment.
 
-This is a static GitHub Pages app. All application assets use relative paths so project-site hosting works. The working project’s private transcripts and authoring materials are intentionally excluded from this repository.
+This is a static app compatible with GitHub Pages and other static hosts. All application assets use relative paths so project-site hosting works. The working project’s private transcripts and authoring materials are intentionally excluded from this repository.
 
 ## Finished STP example
 
