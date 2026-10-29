@@ -1,3 +1,5 @@
+For Vercel and `athletestories.org` setup, see [VERCEL.md](VERCEL.md).
+
 # Athlete Stories
 
 A judge-accessible prototype for turning an athletic event into a visual story: short form → interview → review moments → attach photos → preview and approve.
@@ -53,7 +55,7 @@ The browser assets can run in mock mode on a static host. Live mode requires the
 
 ## Hosting and repository access
 
-The demo is hosted separately with public link access for judges. This GitHub repository stays private until the owner explicitly opens it for judging. GitHub Pages is disabled because the current account plan does not support Pages from this private repository. Hosting builds the Sites server with `dist/` copied to its public assets; publishing requires a separate deployment.
+The demo is hosted separately with public link access for judges. This GitHub repository is now public at the owner’s request. GitHub Pages is disabled because the current account plan does not support Pages from this private repository. Hosting builds the Sites server with `dist/` copied to its public assets; publishing requires a separate deployment.
 
 ## Visual story experience
 
@@ -61,7 +63,7 @@ Created stories now use the Alex-inspired journey layout: a persistent moment na
 
 ## Preserved baseline
 
-The original hosted demo is preserved at Git tag `snapshot-before-alex-viewer` (commit `6f97275`). Sites version 1 is also retained as the pre-update deployment. The GitHub repository remains private.
+The original hosted demo is preserved at Git tag `snapshot-before-alex-viewer` (commit `6f97275`). Sites version 1 is also retained as the pre-update deployment. The GitHub repository is now public at the owner’s request.
 
 ## Seeded walkthroughs
 

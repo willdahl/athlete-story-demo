@@ -7,3 +7,5 @@ qa/
 
 /test-results/
 /server/public/
+
+.vercel/

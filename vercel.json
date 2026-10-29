@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "npm test",
+  "outputDirectory": "dist",
+  "installCommand": "npm ci",
+  "functions": { "api/index.mjs": { "maxDuration": 300 } },
+  "rewrites": [{ "source": "/api/:path*", "destination": "/api/index?route=:path*" }]
+}

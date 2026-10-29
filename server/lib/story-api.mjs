@@ -23,7 +23,7 @@ export async function handleApi(request,env){
  // Public fictional demo namespace; never expose previously account-scoped stories.
  const owner='shared-fictional-demo-v1';
  const configured=Boolean(env.OPENROUTER_API_KEY&&env.SUPABASE_URL&&env.SUPABASE_SECRET_KEY);
- if(path==='/api/session')return json({liveAvailable:configured,sharedDemo:true});
+ if(path==='/api/session')return json({liveAvailable:configured,sharedDemo:true,...(env.DIRECT_PHOTOS==='1'?{directPhotos:true}:{})});
  if(!configured)return json({error:'Live services are not configured. Mock mode remains available.'},503);
  if(!['GET','POST'].includes(request.method))return json({error:'Method not allowed.'},405);
  if(request.method==='POST'&&(request.headers.get('Origin')!==url.origin||request.headers.get('X-Story-Request')!=='1'))return json({error:'This request must come from the story app.'},403);
@@ -49,6 +49,21 @@ export async function handleApi(request,env){
    // Use the shared demo namespace; ignore caller-supplied identities.
    const key=[encodeURIComponent(owner),photo[1],photo[2]].join('/');
    const headers={apikey:env.SUPABASE_SECRET_KEY,Authorization:`Bearer ${env.SUPABASE_SECRET_KEY}`};
+   if(env.DIRECT_PHOTOS==='1'){
+    if(request.method==='GET'){
+     const r=await fetch(env.SUPABASE_URL+'/storage/v1/object/sign/athlete-photos/'+key,{method:'POST',headers:{...headers,'Content-Type':'application/json'},body:JSON.stringify({expiresIn:300}),signal:AbortSignal.timeout(20000)});
+     if(!r.ok)return json({error:'Photo unavailable.'},404);
+     const data=await r.json();
+     return new Response(null,{status:302,headers:{Location:env.SUPABASE_URL+'/storage/v1'+data.signedURL,'Cache-Control':'no-store'}});
+    }
+    const {type,size}=JSON.parse(new TextDecoder().decode(await readBody(request,2000)));
+    if(!/^image\/(jpeg|png|webp|gif|avif)$/.test(type||''))return json({error:'Choose a supported image.'},400);
+    if(!Number.isInteger(size)||size<=0||size>8*1024*1024)return json({error:'Choose an image up to 8 MB.'},413);
+    const r=await fetch(env.SUPABASE_URL+'/storage/v1/object/upload/sign/athlete-photos/'+key,{method:'POST',headers:{...headers,'Content-Type':'application/json','x-upsert':'true'},body:'{}',signal:AbortSignal.timeout(20000)});
+    if(!r.ok)throw Error('Could not prepare the photo upload. Your browser copy is retained.');
+    const data=await r.json();
+    return json({uploadUrl:env.SUPABASE_URL+'/storage/v1'+data.url,url:path});
+   }
    if(request.method==='GET'){
     const r=await fetch(env.SUPABASE_URL+'/storage/v1/object/athlete-photos/'+key,{headers,signal:AbortSignal.timeout(20000)});
     if(!r.ok)return json({error:'Photo unavailable.'},404);

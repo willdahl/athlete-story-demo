@@ -12,10 +12,17 @@ export function agentProject(project){
 export async function callAgent(action,project){return api('/api/agent',{action,project:agentProject(project)});}
 export async function saveCloud(project){
  const copy=structuredClone(project);
+ const state=await liveSession();
  for(const asset of copy.media){
   if(asset.dataUrl?.startsWith('data:image/')){
    const blob=await (await fetch(asset.dataUrl)).blob();
-   const result=await api(`/api/photos/${copy.id}/${asset.id}`,null,{headers:{'Content-Type':blob.type},raw:blob});
+   const path=`/api/photos/${copy.id}/${asset.id}`;
+   let result;
+   if(state.directPhotos){
+    result=await api(path,{type:blob.type,size:blob.size});
+    const upload=await fetch(result.uploadUrl,{method:'PUT',headers:{'Content-Type':blob.type},body:blob});
+    if(!upload.ok)throw Error('Photo upload failed. The original remains in this browser.');
+   }else result=await api(path,null,{headers:{'Content-Type':blob.type},raw:blob});
    if(copy.overviewPhoto===asset.dataUrl)copy.overviewPhoto=result.url;
    asset.dataUrl=result.url;
   }

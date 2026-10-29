@@ -1,0 +1,12 @@
+.env
+.env.*
+server/.dev.vars
+server/.env*
+server/node_modules
+server/public
+server/dist
+server/.wrangler
+server/.openai
+node_modules
+qa
+*.log
