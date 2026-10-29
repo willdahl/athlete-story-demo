@@ -16,3 +16,9 @@ Deployment verification is recorded separately after hosting succeeds. Mock test
 - Browser verified: existing saved stories open in the new viewer; selecting a moment updates the shared panes; source text and training data remain intact; supplied coordinates render numbered map pins; editing geographic context clears approval and blocks preview until approved.
 - Desktop layout checked at 988 × 844. The pane grid was corrected to prevent training content from extending beyond the viewport.
 - Unlocated stories use a chronological strip, not a fabricated map route. New moments have no supporter pane without explicit supporter context.
+
+## Seeded walkthrough update
+
+31 automated tests pass. Additional coverage verifies independent seed identities, source/media remapping, original seed immutability, exclusion of conversational replies, changed-source-only updates, photo retention, and miles display conversion.
+
+Browser verified: first-5K interview opens prefilled; changing its personal-context answer produces a one-moment before/after comparison; applying leaves that moment unapproved while others remain ready. Alex's preview shows ten original beats, images, synthetic training, and the published route with illustrative markers. No live AI service is implied.

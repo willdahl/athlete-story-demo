@@ -19,7 +19,12 @@ export const COVERAGE = Object.freeze([
 
 const mainIds = new Set(COVERAGE.map(section => section.id));
 const turnsOf = project => Array.isArray(project?.turns) ? project.turns : [];
-const hasAnswer = turn => typeof turn?.answer === 'string' && turn.answer.trim().length > 0;
+export function isStoryAnswer(turn){
+ if(typeof turn?.answer!=='string'||!turn.answer.trim()||turn.storyUse==='conversation_only')return false;
+ const text=turn.answer.trim();
+ return !/^(skip|pass|i just did|i just told you|already answered)[.! ]*$/i.test(text)&&!/^see my answers and help me (?:to )?draw (?:any )?(?:insights|singiths)[.! ]*$/i.test(text);
+}
+const hasAnswer = isStoryAnswer;
 
 /** At most one rule-based follow-up in each of three coverage areas. */
 function followupFor(sectionId, answer) {
@@ -36,7 +41,7 @@ function followupFor(sectionId, answer) {
     }
   }
   if (sectionId === 'training') {
-    if (/\d|\b(days|weeks|months|miles|kilometres|kilometers|hours)\b/i.test(answer)) {
+    if (/\b\d+(?:\.\d+)?\s*(?:days|weeks|months|miles|kilometres|kilometers|hours)\b/i.test(answer)) {
       return { kind: 'routine', text: 'Beyond those numbers, what was the preparation actually like for you? Was there a particular part of the routine you want to remember?' };
     }
     if (/\b(train|trained|training|practice|practised|practiced|walk|walks|ride|rides|run|runs)\b/i.test(answer)) {

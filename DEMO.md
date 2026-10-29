@@ -26,3 +26,13 @@ Open the deployed homepage in a fresh browser profile or a new browser with no s
 ## Claims to avoid
 
 Do not call the interview live AI, the local save a Supabase integration, a story approval public publication, or the sample data a live activity connection. Source code is kept private until the owner opens it for judging. A hosted static app does not require the repository to be public, but GitHub Pages availability for a private repo depends on the owner's plan.
+
+## Seeded walkthrough recording path
+
+1. Explore Alex’s completed story from the main hero link.
+2. Return home. Under “Make your version of Alex’s story,” choose Preview to see the editable starting copy, then Edit story and Interview to inspect its source answers.
+3. Alternatively start the first-5K seed at Interview. Open Personal Context and Why, change its answer, and choose Review proposed changes at the bottom.
+4. Compare the old and proposed moment. Apply, approve the changed moment, add/tag a photo, and preview.
+5. Start another seed copy to demonstrate that the original and prior saved copies remain intact.
+
+The interview is still simulated. Changed drafts use source answers verbatim; this walkthrough does not claim live editorial reasoning.

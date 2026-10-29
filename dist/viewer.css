@@ -3,3 +3,4 @@ body.viewing .site-header{height:54px;padding:0 22px}body.viewing{overflow:hidde
 @media(max-width:480px){.journey-panes.overview{grid-template-columns:1fr}.journey-photo img{height:220px}}
 
 @media(min-width:761px){.overview-training .journey-photo img{height:clamp(100px,15vh,150px)}}
+.journey-reflection p{font:400 clamp(17px,1.6vw,23px)/1.45 Georgia,serif;white-space:pre-wrap;margin:0 0 12px}

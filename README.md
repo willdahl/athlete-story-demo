@@ -61,3 +61,13 @@ Created stories now use the Alex-inspired journey layout: a persistent moment na
 ## Preserved baseline
 
 The original hosted demo is preserved at Git tag `snapshot-before-alex-viewer` (commit `6f97275`). Sites version 1 is also retained as the pre-update deployment. The GitHub repository remains private.
+
+## Seeded walkthroughs
+
+The home page now offers three lanes: the unchanged completed Alex showcase, an editable Alex walkthrough, and the user-supplied mock first-5K interview. Each walkthrough creates a new browser-local project with independent IDs and copies of its inputs. Entry points are Interview, Review moments, Photos, and Preview. Starting a fresh copy preserves existing copies.
+
+The Alex seed includes the roleplay questions/answers intentionally selected for this demo, reviewed direct-address copy, synthetic training data, generated images, and illustrative course context. Internal chat IDs and working editorial documents remain excluded. Unlike the read-only STP showcase, this seed intentionally exposes the roleplay answers for editing. Recalled training figures remain distinct from ledger values. Changing the event or activity hides inherited STP geography.
+
+The first-5K seed retains the supplied interview text and spelling. “Skip,” “I just did,” and the request for help drawing insights remain in the interview but are excluded from draft moments. No reflection, precise route, training totals, or images are invented.
+
+Editing an answer invalidates affected approvals. Review proposed changes shows current versus proposed wording before applying. In mock mode, changed moments use verbatim answers rather than generating new prose; untouched curated moments retain their wording and media. Before applying, previous moments are retained in exported history. Removed-moment photos remain available for retagging.

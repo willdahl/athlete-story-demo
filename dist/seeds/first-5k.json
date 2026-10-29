@@ -1,0 +1,95 @@
+{
+  "name": "Will",
+  "event": "First 5k",
+  "activity": "running",
+  "date": "2026-09-03",
+  "why": "Completed couch to 5k -- and my friends were there to cheer me on at the beginning, middle, and end of the race.",
+  "turns": [
+    {
+      "id": "81591a0e-0253-4b5e-b3cb-e0ac250f2bef",
+      "questionId": "summary",
+      "question": "What event or accomplishment would you like to remember? Give me the short version of what happened.",
+      "answer": "COuch to 5k after thinking I would not have run before. My friends were there to support me and I had a greaet time, and proved I could do something. Now I want to do more!"
+    },
+    {
+      "id": "5cfb51c4-4145-491a-bf4b-fa1dc279fab0",
+      "questionId": "why",
+      "question": "What made this matter to you personally? What would help someone understand why you wanted to do it?",
+      "answer": "I had never considered myself a runner and now I can."
+    },
+    {
+      "id": "53530332-413b-4dbc-8bc5-4b5250d3f368",
+      "questionId": "why.followup.first",
+      "question": "What was it about trying this for the first time that mattered to you?",
+      "answer": "Skip",
+      "storyUse": "conversation_only"
+    },
+    {
+      "id": "42938aa7-cc94-43ac-8cea-b76596233b2e",
+      "questionId": "context",
+      "question": "What should we know about the event itself: the setting, distance, route, or kind of challenge?",
+      "answer": "This event was in Dallas and went downtown, which is also near where I worked at the time. It was fun to see the urban setting trasnformed into a community event with people from all over and that typically busy streets were open just for the race. It was a much livlier dynamic than during a typical weekday or even weekend."
+    },
+    {
+      "id": "7adeacb4-ee90-4a63-82fa-f89cdfedcbd9",
+      "questionId": "training",
+      "question": "How did you prepare? Tell me about the training or practice, how long you prepared, and any totals you remember. Estimates are fine.",
+      "answer": "I looked up a couch to 5k program on reddit and pretty much did it. I am an amateur so didn't track too much."
+    },
+    {
+      "id": "2f491684-db58-431a-9612-3f6000c12555",
+      "questionId": "training.followup.routine",
+      "question": "Beyond those numbers, what was the preparation actually like for you? Was there a particular part of the routine you want to remember?",
+      "answer": "It was intimidating at first, but then a friend told me that it was OK just to stop and go stop and go -- or alternatite between running and walking. I could build up at my own pace and that was OK"
+    },
+    {
+      "id": "da3944dd-e430-466e-a823-8e0bc554d4b3",
+      "questionId": "leadup",
+      "question": "What was the lead-up like in the week before, the day before, or the morning of? What stands out about how you felt?",
+      "answer": "Overall just lots of excitement. This seemed like an inclusionary thing and something for berginners. By the time the actual event happened, I was less conerned about beign able to to it and more just looking forward to it. I made a playlist for some songs going just over my estimated time, so that I could do some pre-game, would have song sngs to skip, and if I needed to walk it out or off I coulod do that tooo ."
+    },
+    {
+      "id": "d17fa48c-ff20-4456-a4f1-56eba373cbf1",
+      "questionId": "experience",
+      "question": "Take me through the experience. Which highlights or lowlights stand out, how did they unfold, and how did you feel? They do not need to have a bigger meaning.",
+      "answer": "I had no idea that many people would be out there running. The biggest highlight for me was that about a mile in, my friends and cowroekrs were there to cheer me on. This gave mea second wind and I had no idea they would be there to do that."
+    },
+    {
+      "id": "aae2f03a-8103-451c-be93-414d58007834",
+      "questionId": "experience.followup.exchange",
+      "question": "You mentioned people being part of the experience. Can you describe one exchange or moment with them and how it felt to you?",
+      "answer": "I just did",
+      "storyUse": "conversation_only"
+    },
+    {
+      "id": "4d8636cb-9483-4088-aa40-8ddd02a8626f",
+      "questionId": "outcome",
+      "question": "How did it end, and how did that compare with what you had hoped for?",
+      "answer": "It ended with a completion and a trophy and celebrations with out group acros the board. Pretty much everything I could have hoped for and more."
+    },
+    {
+      "id": "7ece2289-d576-4122-9b4b-18790cb2b5e7",
+      "questionId": "after",
+      "question": "What happened immediately afterward or later on? Was there anything about that time you want to include?",
+      "answer": "Afterwaresd, i was invited to cheer for the people who cheered me on the next day. That was really special to me."
+    },
+    {
+      "id": "97524fb6-8799-4a12-a1e7-9c6f1533e41e",
+      "questionId": "reflection",
+      "question": "Looking back now, what would you most want this story to keep? Is there anything you are still making sense of?",
+      "answer": "See my answers and help me to draw any singiths",
+      "storyUse": "conversation_only"
+    }
+  ],
+  "metrics": {
+    "source": "athlete_reported",
+    "sourceTurnIds": []
+  },
+  "seedKey": "first-5k",
+  "moments": [],
+  "media": [],
+  "seedNotes": [
+    "User-supplied mock interview. Original spelling and answers are retained.",
+    "Conversation-only replies stay in the interview record but are excluded from the story. No photos, training totals, or precise route were supplied."
+  ]
+}

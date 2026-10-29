@@ -1,0 +1,766 @@
+{
+  "seedKey": "alex",
+  "name": "Alex",
+  "event": "Seattle to Portland · 2026",
+  "activity": "cycling",
+  "date": "",
+  "why": "Back in the saddle, with your friends behind you",
+  "turns": [
+    {
+      "id": "alex-turn-1",
+      "questionId": "summary",
+      "question": "Hi Alex, what experience would you like to talk about?",
+      "answer": "I want to talk about the STP this year",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-3",
+      "questionId": "context",
+      "question": "What is the STP, Alex?",
+      "answer": "The Seattle to Portland Bike Ride",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-5",
+      "questionId": "summary.followup.seed5",
+      "question": "What made you want to talk about this year’s ride?",
+      "answer": "It was a special feat that I accomplished",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-7",
+      "questionId": "why",
+      "question": "What made it a special feat for you?",
+      "answer": "I trainned really hard for it, after overcoming previous setbacks, and then my friends showed up for me",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-9",
+      "questionId": "why.followup.seed9",
+      "question": "When you think back to your friends showing up for you, what moment comes to mind?",
+      "answer": "They helped me to prepare, made travel plans to the desintation city (portland) to be there for me when I finished, and then also we got to ride home together",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-11",
+      "questionId": "outcome",
+      "question": "Can you take me back to when you first saw your friends in Portland—what was happening?",
+      "answer": "So it was at the finish line -- it was the first time for me to have anyone there waiting for me",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-13",
+      "questionId": "outcome.followup.seed13",
+      "question": "What did you notice when you first spotted them?",
+      "answer": "They were cheering",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-15",
+      "questionId": "outcome.followup.seed15",
+      "question": "What was it like to hear them cheering for you?",
+      "answer": "It was motivating and special",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-17",
+      "questionId": "after",
+      "question": "What did you do when you reached them?",
+      "answer": "I hugged them and we celebrated. then we went out to the beer garden and just realxed and ate",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-19",
+      "questionId": "after.followup.seed19",
+      "question": "As you sat down to relax and eat, how were you feeling?",
+      "answer": "I felt accomplished, tired, and supported",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-21",
+      "questionId": "why.followup.seed21",
+      "question": "You mentioned earlier setbacks—what had you been working to overcome before this ride?",
+      "answer": "I had had some injuries and other life events that ook me off the racing circuit",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-23",
+      "questionId": "training",
+      "question": "What was it like to start training again after that time away?",
+      "answer": "I was hard on myself for having a gap in my training regimen, but still also encouraged myself and was happy to get rollign again",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-25",
+      "questionId": "training.followup.seed25",
+      "question": "Can you remember an early training ride when you felt happy to be rolling again?",
+      "answer": "Yes -- it was the first time I started getting closer to the speed I used to have and the endurance",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-27",
+      "questionId": "training.followup.seed27",
+      "question": "What happened on that ride that made you notice your speed and endurance coming back?",
+      "answer": "It was a particular elevation and distannace and as I was tracking myself, I knew and felt I was \"back\"",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-29",
+      "questionId": "training.followup.seed29",
+      "question": "What did you do when you realized you were “back”?",
+      "answer": "I felt pumped",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-31",
+      "questionId": "training.followup.seed31",
+      "question": "How did that feeling affect the rest of that ride?",
+      "answer": "It was exhillerating and satisfying",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-33",
+      "questionId": "training.followup.seed33",
+      "question": "What did your training look like as you prepared for the STP?",
+      "answer": "I trained 75 days over four months as much as I vcould, with breaks in between",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-35",
+      "questionId": "training.followup.seed35",
+      "question": "What would a typical training day involve?",
+      "answer": "It depends on the day. Weekends were early mornings and weekday swere either afternoons or time at home with my at home bike trainer",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-37",
+      "questionId": "training.followup.seed37",
+      "question": "Take me through one of those early weekend mornings—how would it start?",
+      "answer": "I think this is too much detail on this. All in all I prlbably put in 3000 miles",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-39",
+      "questionId": "leadup",
+      "question": "About 3,000 miles—got it. How were you feeling as the STP approached?",
+      "answer": "Excited, axcious / nervous",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-41",
+      "questionId": "leadup.followup.seed41",
+      "question": "What were you most nervous about?",
+      "answer": "It is a long and hard ride. I would be going alone.",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-43",
+      "questionId": "leadup.followup.seed43",
+      "question": "How did you feel about going alone as you started the ride?",
+      "answer": "Like it was something I was doing and able to do myself -- but still something that there would b eno one else witih me if anything went wrong or to encourage me. I also felt that previous times I had gone with people who weren't as committed and I was slowing down for them. I wouond't have anyone to hold me back this time, but I would also have no oone else to blame.",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-45",
+      "questionId": "experience",
+      "question": "Was there a moment during the ride when being on your own really stood out to you?",
+      "answer": "Pretty much the whole race it was that feeling",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-47",
+      "questionId": "experience.followup.seed47",
+      "question": "How did you keep yourself going when the ride got hard?",
+      "answer": "I kept motivated to my goal, my music, the feeling of accomplishment. Thinking of all of the work I had put in",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-49",
+      "questionId": "why.followup.seed49",
+      "question": "What goal were you keeping in mind during the ride?",
+      "answer": "To see what I can do and what i am made of",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-51",
+      "questionId": "experience.followup.seed51",
+      "question": "Was there a point in the ride when you surprised yourself?",
+      "answer": "not really",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-53",
+      "questionId": "experience.followup.seed53",
+      "question": "What part of the ride stands out most when you look back now?",
+      "answer": "When the miles were getting to me and then I took a moment for myself and my friends had chcked in.\n\nI messaged them back about how I was feeling a little under the weather. They immediately got back to me to offer to pick me up if needed and asked if I was OK --b ut also encouraged me at the same time for everythiing I had done and could do",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-55",
+      "questionId": "experience.followup.seed55",
+      "question": "What was it like to read their replies in that moment?",
+      "answer": "I felt supported and it felt good",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-57",
+      "questionId": "experience.followup.seed57",
+      "question": "What did you do after reading their messages?",
+      "answer": "I took a moment to reflect and got back on the bike",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-59",
+      "questionId": "experience.followup.seed59",
+      "question": "What were you thinking about in that moment before getting back on the bike?",
+      "answer": "I was going to finisht he ride tot he best of the ability, and my friends had my back + would be there waiting for me",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-61",
+      "questionId": "experience.followup.seed61",
+      "question": "How did you feel as you started riding again?",
+      "answer": "Getting a second wind",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-63",
+      "questionId": "experience.followup.seed63",
+      "question": "How much of the ride did you still have ahead of you at that point?",
+      "answer": "about athird",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-65",
+      "questionId": "experience.followup.seed65",
+      "question": "What was that final third of the ride like for you?",
+      "answer": "still very very tough at points, it's a tough course and dangerous at points",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-67",
+      "questionId": "experience.followup.seed67",
+      "question": "What made those parts feel dangerous?",
+      "answer": "Close to the road. elevation changes; poor markings. drivers can be crazy",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-69",
+      "questionId": "experience.followup.seed69",
+      "question": "How did you handle those stretches while you were already tired?",
+      "answer": "I just did my best to focus and be alert",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-71",
+      "questionId": "experience.followup.seed71",
+      "question": "When did it start to feel like the finish was close?",
+      "answer": "When we could see the mountain and the skyline",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-73",
+      "questionId": "experience.followup.seed73",
+      "question": "What went through your mind when you saw the mountain and skyline?",
+      "answer": "Finish / victory in sight",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-75",
+      "questionId": "leadup.followup.seed75",
+      "question": "You mentioned your friends also helped you prepare—what did they do?",
+      "answer": "So I was going to go do this all myself. I was going to bike down on the saturday morning of the race at 4am to the starting line in seattle; do the race, and then rent a car and/or try to ride a train up on saturday night -- and I had hard commitments with family on Sunday morning, so it was all a very fixed timeline and constrained.\n\nMy friends actually met with me the day before and let me know they would be going down to Portland to support me. We transferred my bike rack to their car and they offered me some good encouragement.",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-77",
+      "questionId": "leadup.followup.seed77",
+      "question": "What was your reaction when they told you they were going to Portland to support you?",
+      "answer": "Mixed. On the one hand, that seemed like a lot of effort just to support me. On the other hand, I knew that my friends' wife was from Portland and my friends' friends awnted to visit -- so it seemed more a like a win win that let me off the hook a bit. I also liked and was appreciatiive to that they would be there for me. That doesn't always happen. I'm pretty self suffiicent, so I was still reluctnat, but happy overall",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-79",
+      "questionId": "leadup.followup.seed79",
+      "question": "What were you still reluctant about?",
+      "answer": "To let others help me / accept hehlp",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-81",
+      "questionId": "leadup.followup.seed81",
+      "question": "What made it easier to accept their help this time?",
+      "answer": "I just told you",
+      "sourceKind": "fictional_roleplay",
+      "storyUse": "conversation_only"
+    },
+    {
+      "id": "alex-turn-83",
+      "questionId": "after.followup.seed83",
+      "question": "You did—the trip worked for them too, which let you off the hook a bit. Sorry for asking you to repeat that.\n\nWhat was the ride home together like?",
+      "answer": "It was a good capstone to the event. We were all tired in our own ways, but all happy to have had the experience together.",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-85",
+      "questionId": "after.followup.seed85",
+      "question": "What do you remember talking about on the way home?",
+      "answer": "The ride, the preparation, what was next, and then just chilling and hanging out",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-87",
+      "questionId": "reflection",
+      "question": "Looking back, how did the experience compare with what you’d imagined when you planned to do it all yourself?",
+      "answer": "I think I had imagnined myself as beign the indpendent hero, I wound up still accomplishing what I wanted and came through knowing that I ahve good friends and even strangers (firends of a friend) who will show up for me",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-89",
+      "questionId": "reflection.followup.seed89",
+      "question": "Has that changed how you feel about accepting help?",
+      "answer": "I think so",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-91",
+      "questionId": "reflection.followup.seed91",
+      "question": "Where do you notice that change, if anywhere?",
+      "answer": "I also want to give back to otehrs and pay it forward",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-93",
+      "questionId": "reflection.followup.seed93",
+      "question": "What would paying it forward look like for you?",
+      "answer": "I think I am still discovering that",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-95",
+      "questionId": "outcome.followup.seed95",
+      "question": "Is there anything else about the experience you’d like to talk about before we wrap up?",
+      "answer": "I am not sure -- did we talk about the finish line and how that was the first itme anyone had been cherring me on there?",
+      "sourceKind": "fictional_roleplay",
+      "storyUse": "conversation_only"
+    },
+    {
+      "id": "alex-turn-97",
+      "questionId": "outcome.followup.seed97",
+      "question": "Yes—you said it was the first time anyone had been waiting for you at the finish, cheering, and that you hugged them and celebrated. We didn’t stay with that moment very long.\n\nWhat did having them there mean to you?",
+      "answer": "It was special to me because they had made the efforr to not only be there, but to actively track my progreess and be there to both cheer and record my finishign moment",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-99",
+      "questionId": "outcome.followup.seed99",
+      "question": "What was it like to watch the recording of your finish afterward?",
+      "answer": "I was glad to have evidence of my accomplishment and that there were otehrs who helped to make that memory possible",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-turn-101",
+      "questionId": "reflection.followup.seed101",
+      "question": "As we wrap up, I’m hearing that both the accomplishment you worked hard for and the friends who showed up to share it mattered to you. What matters most to retain from your experience?",
+      "answer": "That it happened and that I can carry that with me",
+      "sourceKind": "fictional_roleplay"
+    },
+    {
+      "id": "alex-context-dinner",
+      "questionId": "after.followup.context",
+      "question": "Additional event context supplied by Will",
+      "answer": "We stopped for a late dinner on the ride home together.",
+      "sourceKind": "user_supplied_event_context"
+    }
+  ],
+  "moments": [
+    {
+      "id": "alex-moment-prep",
+      "title": "Getting back in the saddle",
+      "navigationLabel": "Preparation",
+      "text": "You were hard on yourself about the gap in your training, even as you encouraged yourself and felt happy to be riding again.\n\nThen, on a ride where you were tracking distance and elevation, you felt you were back. Your speed and endurance were getting closer to what they had been.\n\nEarly mornings on weekends. Afternoons or your trainer at home during the week. You remember training on 75 days, with breaks in between.",
+      "sourceTurnIds": [
+        "alex-turn-21",
+        "alex-turn-23",
+        "alex-turn-25",
+        "alex-turn-27",
+        "alex-turn-29",
+        "alex-turn-31",
+        "alex-turn-33",
+        "alex-turn-35",
+        "alex-turn-37"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 47.68091,
+      "longitude": -122.33586,
+      "locationName": "Preparation",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-rack",
+      "title": "Glad they were coming, reluctant to accept help",
+      "navigationLabel": "Pre-game",
+      "text": "You had planned to manage the ride and get home yourself, with family commitments early on Sunday. The day before, you met your friends and transferred your bike rack to their car. They were coming to Portland to support you.\n\nYou were glad, but it felt like a lot of effort just for you. Knowing they wanted the Portland trip too let you off the hook a little. You appreciated the offer and were still reluctant to accept help.",
+      "sourceTurnIds": [
+        "alex-turn-75",
+        "alex-turn-77",
+        "alex-turn-79"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 47.62091,
+      "longitude": -122.34086,
+      "locationName": "Pre-game",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-start",
+      "title": "Your pace, on your own",
+      "navigationLabel": "Starting alone",
+      "text": "You were excited and nervous. A long, hard ride was ahead, and you were going alone.\n\nThis time you could ride at your own pace. You had slowed down for other people on previous rides. Now there would be no one holding you back, but no companion beside you if something went wrong or you needed encouragement.",
+      "sourceTurnIds": [
+        "alex-turn-39",
+        "alex-turn-41",
+        "alex-turn-43",
+        "alex-turn-45"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 47.65591,
+      "longitude": -122.30086,
+      "locationName": "Starting alone",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-effort",
+      "title": "Seeing what you could do",
+      "navigationLabel": "Finding a rhythm",
+      "text": "You wanted to see what you could do and what you were made of. When it got hard, you kept your goal, your music, and the feeling of accomplishment in mind. You thought about the work you had put in.",
+      "sourceTurnIds": [
+        "alex-turn-47",
+        "alex-turn-49"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 47.1,
+      "longitude": -122.43,
+      "locationName": "Finding a rhythm",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-challenge",
+      "title": "Feeling the miles, knowing they had your back",
+      "navigationLabel": "Feeling the miles",
+      "text": "The miles were getting to you. When you told your friends you were feeling under the weather, they immediately asked if you were okay and offered to pick you up. They also encouraged you in what you had done and could do.\n\nYou felt supported. You took a moment to reflect and got back on the bike, knowing they had your back and would be waiting for you.",
+      "sourceTurnIds": [
+        "alex-turn-53",
+        "alex-turn-55",
+        "alex-turn-57",
+        "alex-turn-59",
+        "alex-turn-61",
+        "alex-turn-63"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 46.61,
+      "longitude": -122.96,
+      "locationName": "Feeling the miles",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-approach",
+      "title": "The finish coming into sight",
+      "navigationLabel": "Finish in sight",
+      "text": "The later miles were still tough. Some stretches felt dangerous, and you did your best to stay focused and alert.\n\nThen you could see the mountain and skyline. The finish felt close.",
+      "sourceTurnIds": [
+        "alex-turn-65",
+        "alex-turn-67",
+        "alex-turn-69",
+        "alex-turn-71",
+        "alex-turn-73"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 45.53676,
+      "longitude": -122.65758000000001,
+      "locationName": "Finish in sight",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-finish",
+      "title": "Your friends were waiting for you at the finish",
+      "navigationLabel": "The finish",
+      "text": "For the first time, people were waiting for you at the finish. They had followed your progress so they could be there to cheer and record you coming in. That effort was what made it special to you.\n\nWatching the recording afterward, you were glad to have evidence of what you had accomplished, and that others had helped make that memory possible.",
+      "sourceTurnIds": [
+        "alex-turn-11",
+        "alex-turn-13",
+        "alex-turn-15",
+        "alex-turn-97",
+        "alex-turn-99"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 45.53076,
+      "longitude": -122.65358,
+      "locationName": "The finish",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-pizza",
+      "title": "Accomplished, tired, and supported",
+      "navigationLabel": "Celebration",
+      "text": "You hugged your friends and celebrated, then went to the beer garden to relax and eat together. You felt accomplished, tired, and supported.",
+      "sourceTurnIds": [
+        "alex-turn-17",
+        "alex-turn-19"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 45.52876,
+      "longitude": -122.65058,
+      "locationName": "Celebration",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-return-dinner",
+      "title": "The ride home together",
+      "navigationLabel": "Ride home together",
+      "text": "You rode home together, stopping for a late dinner on the way. You remember everyone being tired in their own ways, but happy to have shared the experience.\n\nYou talked about the ride, the preparation, and what was next. Then you were just chilling and hanging out.",
+      "sourceTurnIds": [
+        "alex-turn-83",
+        "alex-turn-85",
+        "alex-context-dinner"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy",
+      "latitude": 46.7,
+      "longitude": -122.7,
+      "locationName": "Ride home together",
+      "locationProvenance": "illustrative_demo"
+    },
+    {
+      "id": "alex-moment-reflection",
+      "title": "Paying the friendship forward",
+      "navigationLabel": "What stays",
+      "text": "You had imagined yourself as the independent hero. You accomplished what you wanted, and came through knowing that friends and friends of friends would show up for you.\n\nYou want to pay that forward. You are still discovering what that might look like.\n\nWhat matters most to keep is that this happened, and that you can carry it with you.",
+      "sourceTurnIds": [
+        "alex-turn-87",
+        "alex-turn-89",
+        "alex-turn-91",
+        "alex-turn-93",
+        "alex-turn-101"
+      ],
+      "approved": true,
+      "revision": 1,
+      "narrativeFormat": "reflection",
+      "sourceKind": "reviewed_editorial_copy"
+    }
+  ],
+  "media": [
+    {
+      "id": "alex-photo-prep",
+      "momentId": "alex-moment-prep",
+      "filename": "Alex rides his charcoal road bike along a leafy road, wearing his teal jersey and pale helmet.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/v2-training.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-rack",
+      "momentId": "alex-moment-rack",
+      "filename": "Alex and Ben fit Alex’s empty bicycle rack to the rear of the friends’ car before their trip.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/v2-pregame.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-start",
+      "momentId": "alex-moment-start",
+      "filename": "Alex waits with his road bike among other entrants in the early-morning event lineup, looking toward the way ahead.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/v2-start.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-effort",
+      "momentId": "alex-moment-effort",
+      "filename": "Synthetic illustration of fictional Alex stopped beside his charcoal road bike on a gravel pull-off overlooking wooded hills and water.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/seq-photo-04.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-challenge",
+      "momentId": "alex-moment-challenge",
+      "filename": "Synthetic illustration of fictional Alex seated on a wooden bench holding a snack and water bottle, with his charcoal road bike beside him.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/seq-photo-05.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-approach",
+      "momentId": "alex-moment-approach",
+      "filename": "Synthetic landscape illustration of a steel bridge across a broad river between wooded banks and hazy hills.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/seq-photo-07.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-finish",
+      "momentId": "alex-moment-finish",
+      "filename": "Synthetic first-person view from Alex approaching a finish stripe. Four supporters behind the left railing look toward the rider, cheering with a Go Alex! sign.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/seq-photo-10.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-pizza",
+      "momentId": "alex-moment-pizza",
+      "filename": "Synthetic illustration of Alex in teal cycling gear and four supporters in sporty casual clothing eating pizza at an outdoor beer-garden table.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/seq-photo-11.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-return-dinner",
+      "momentId": "alex-moment-return-dinner",
+      "filename": "Synthetic illustration of five adults at dinner: Ben, Maya, Alex, Jordan and Sam from left to right. Alex wears a rust shirt; plates and water tumblers sit on a wooden table.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/seq-photo-12.png",
+      "provenance": "generated_illustration"
+    },
+    {
+      "id": "alex-photo-reflection",
+      "momentId": "alex-moment-reflection",
+      "filename": "Synthetic first-person view from Alex approaching a finish stripe. Four supporters behind the left railing look toward the rider, cheering with a Go Alex! sign.",
+      "type": "image/png",
+      "dataUrl": "stp/assets/seq-photo-10.png",
+      "provenance": "generated_illustration"
+    }
+  ],
+  "metrics": {
+    "preparationWeeks": 20,
+    "trainingDays": 75,
+    "distanceKm": 4564.904,
+    "trainingHours": 186.56666666666666,
+    "weekly": [
+      {
+        "week": 1,
+        "distanceKm": 120.218
+      },
+      {
+        "week": 2,
+        "distanceKm": 162.222
+      },
+      {
+        "week": 3,
+        "distanceKm": 181.534
+      },
+      {
+        "week": 4,
+        "distanceKm": 103.964
+      },
+      {
+        "week": 5,
+        "distanceKm": 200.202
+      },
+      {
+        "week": 6,
+        "distanceKm": 217.583
+      },
+      {
+        "week": 7,
+        "distanceKm": 242.045
+      },
+      {
+        "week": 8,
+        "distanceKm": 136.151
+      },
+      {
+        "week": 9,
+        "distanceKm": 263.932
+      },
+      {
+        "week": 10,
+        "distanceKm": 272.784
+      },
+      {
+        "week": 11,
+        "distanceKm": 295.797
+      },
+      {
+        "week": 12,
+        "distanceKm": 162.544
+      },
+      {
+        "week": 13,
+        "distanceKm": 316.719
+      },
+      {
+        "week": 14,
+        "distanceKm": 332.49
+      },
+      {
+        "week": 15,
+        "distanceKm": 383.346
+      },
+      {
+        "week": 16,
+        "distanceKm": 183.948
+      },
+      {
+        "week": 17,
+        "distanceKm": 380.449
+      },
+      {
+        "week": 18,
+        "distanceKm": 300.143
+      },
+      {
+        "week": 19,
+        "distanceKm": 207.927
+      },
+      {
+        "week": 20,
+        "distanceKm": 100.906
+      }
+    ],
+    "source": "synthetic_fixture",
+    "distanceUnit": "miles"
+  },
+  "overviewText": "You trained hard after time away from riding, and finished something you wanted to accomplish.\n\nThis time, your friends were waiting at the finish. It was the first time anyone had been there to cheer you in.",
+  "overviewSourceTurnIds": [
+    "alex-turn-7",
+    "alex-turn-11",
+    "alex-turn-21",
+    "alex-turn-97"
+  ],
+  "overviewPhoto": "stp/assets/seq-photo-01.png",
+  "seedNotes": [
+    "Interview answers come from Will role-playing fictional Alex. The moment copy was separately reviewed and addressed to Alex.",
+    "Training charts use the synthetic 20-week ledger: 75 days and 2,836.5 miles. Alex recalled four months and roughly 3,000 miles; those estimates remain in the interview.",
+    "Images are generated illustrations. The completed STP showcase stays separate and unchanged."
+  ],
+  "routeAsset": "stp/route.geojson",
+  "routeLabel": "Published STP course · illustrative moment locations",
+  "trainingMomentId": "alex-moment-prep"
+}

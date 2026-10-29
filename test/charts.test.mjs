@@ -45,3 +45,8 @@ test('synthetic examples render actual supplied series with consistent totals',a
   assert.doesNotMatch(html,/NaN|Infinity|unavailable/);
  }
 });
+
+test('mile display converts canonical kilometers without changing the supplied record',()=>{
+ const metrics={distanceKm:16.09344,distanceUnit:'miles',source:'synthetic_fixture',weekly:[{week:1,distanceKm:16.09344}]};
+ const html=renderTraining(metrics,'cycling');assert.match(html,/10.*miles/s);assert.match(html,/Week 1: 10 miles/);assert.equal(metrics.distanceKm,16.09344);
+});
