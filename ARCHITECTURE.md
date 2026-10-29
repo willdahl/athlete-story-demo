@@ -1,34 +1,30 @@
-# How the demonstration works
+# How the service works
 
-## Current execution
+## Live execution
 
-Everything executes in the browser. GitHub Pages serves static files; no application server receives interview answers or images.
+The browser experience is served by the supported Sites Vinext worker. Visitors can explore Alex’s completed story, use browser-local mock mode, or use live AI and shared cloud saving without sign-in. No guest sessions are created.
 
-1. The form creates a project with a stable identifier.
-2. The interview module selects questions from nine coverage areas and a bounded set of answer-sensitive follow-ups.
-3. Submitted answers become source turns. Moment proposals quote those answers and retain source-turn IDs.
-4. The athlete edits and approves moment revisions. The app requires a final approval for the assembled story.
-5. Photo selections are read in the browser and associated with moment IDs.
-6. IndexedDB stores the project, answers, moments and media. Export produces a user-held JSON backup.
-7. The chart module accepts explicit numeric totals and optional weekly records; it does not infer a weekly distribution from totals.
+1. A story starts from a short form or an independent seed copy.
+2. OpenRouter receives the interview context and generates a focused next question. It can follow up on details or ambiguity rather than following a fixed questionnaire.
+3. Drafting proposes meaningful beats, source IDs, standalone/context summaries and candidate angles. A second model pass checks the proposed story against the original answers.
+4. Code validates source IDs and attaches exact original answers as evidence. Unknown references are rejected. Evidence tracing does not mechanically verify every semantic claim.
+5. Current and proposed wording are compared before applying. Applied drafts require athlete approval. Existing matched moment IDs preserve photos; removed-moment photos can be retagged.
+6. Supabase stores a story document in the fixed shared-fictional-demo-v1 namespace, including turns, draft/history data, approvals and training figures. Writes use optimistic versions; stale saves return HTTP 409.
+7. Photos upload to a private Supabase Storage bucket. Server routes use the fixed shared demo namespace. Demo photos are available to all visitors through the app. Optional context is saved with the asset. Images are not sent to OpenRouter.
+8. The story experience renders approved moments. Training totals create cards; weekly data creates charts. No route or weekly activity is invented.
 
-## Intended service architecture
+## Access and secrets
 
-The static prototype demonstrates the workflow, not the full intended agentic service. Production work would replace the deterministic interview with a server-side model adapter and tool-controlled orchestration, and replace browser persistence with Supabase Postgres/Auth/Storage. The service would maintain exact evidence, local and cross-beat summaries, ranked candidate angles, approved revisions, and a source-checked rendering manifest. A separate activity-data adapter could provide measured metrics and source versions.
+Runtime keys are Sites secrets, never browser assets. Supabase browser roles have no direct access to story tables. RLS is enabled; the server uses service-role access and uses a fixed shared demo filter on every operation. Caller identity headers and owner parameters are ignored. Previous account-scoped records remain inaccessible through these routes. Cross-origin writes are rejected. Agent requests reserve a daily allowance atomically (40 requests across the demo; drafting uses two model calls).
 
-The model would propose follow-ups and edits. Application transactions would enforce ownership, current revisions and explicit athlete approval. Private source material would not be included in a public story projection. Uploaded images would be sent to a generation service only after a separate user decision.
+Supabase CLI authentication is only for database administration. There is no user-facing sign-in. Database schema changes live in `supabase/migrations`. SQLSTATE PT409 represents application edit conflicts; retryable serialization codes must not be used for that purpose.
 
-## Known limits
+## Mock mode and limits
 
-- No live LLM, semantic claim checker, or external data connector is active.
-- Model-output quality cannot be evaluated from the scripted mock alone.
-- No login, cloud backup, public story sharing, multi-device sync, or role-based access is present.
-- Browser-local data belongs to the browser profile, not an authenticated account.
-- Sample data and sample images are synthetic; no claims of actual race records or photographs.
-- Story editing is useful for the demo, but not a substitute for production consent and authorization controls.
+Mock mode remains deterministic and browser-local. It groups source answers verbatim, preserving reviewed wording for unaffected seeded moments. Neither mode publishes a public story link on approval. Browser recovery copies are browser-profile data. Cloud-photo JSON export contains shared demo links; it is not a self-contained image archive. Activity connectors and generated media are not implemented. Live draft quality still requires athlete review.
 
 ## Interview coverage
 
 High Level Summary; Personal Context and Why; Event Context; Training and Preparation; Pre-Game / Lead-Up; What the Event Was Like; Completion / Outcome; What Happened After; Reflections.
 
-Coverage is not a mandatory emotional arc. A hiking trip need not be a triumph, a recovery, or a story of friendship. The available answers determine what is included.
+These are coverage areas, not a mandatory emotional arc. The athlete’s answers determine the story.

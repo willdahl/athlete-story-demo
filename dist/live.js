@@ -1,6 +1,6 @@
 let session;
 export async function liveSession(){
- try{const r=await fetch('/api/session');if(!r.ok)return {liveAvailable:false,signedIn:false};session=await r.json();return session;}catch{return {liveAvailable:false,signedIn:false};}
+ try{const r=await fetch('/api/session');if(!r.ok)return {liveAvailable:false};session=await r.json();return session;}catch{return {liveAvailable:false};}
 }
 async function api(path,body,options={}){
  const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json','X-Story-Request':'1',...options.headers},body:options.raw||JSON.stringify(body)});
@@ -24,7 +24,7 @@ export async function saveCloud(project){
  return {...copy,cloudVersion:version};
 }
 export async function cloudStories(){
- const state=await liveSession();if(!state.signedIn||!state.liveAvailable)return [];
+ const state=await liveSession();if(!state.liveAvailable)return [];
  const response=await fetch('/api/stories');const data=await response.json();if(!response.ok)throw Error(data.error);
  return data.map(row=>({...row.document,cloudVersion:row.version}));
 }

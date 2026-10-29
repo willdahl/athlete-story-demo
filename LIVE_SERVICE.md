@@ -1,46 +1,25 @@
 # Live story service
 
-Status: implemented locally; database migration and hosted activation pending.
+The hosted app is a shared fictional demo, with no sign-in and no guest sessions. OpenRouter is the only AI provider. Supabase stores live demo stories and photos; anyone visiting can read and edit them. Mock stories remain browser-local. The curated Alex example is unchanged.
 
-The public demo and private GitHub repository retain their existing audiences. The curated Alex story in `dist/stp` is unchanged. Editable seed copies can opt into live mode after Sites sign-in.
+## Implementation
 
-## Flow
+The Sites Vinext worker serves the existing browser app and `/api` routes. `/api/session` reports service availability and `sharedDemo: true`, without creating a session. All data routes use the fixed `shared-fictional-demo-v1` namespace, ignoring caller identity headers and owner parameters. Previously account-scoped records are not exposed or migrated.
 
-The supported Sites Vinext server wraps the existing static experience. `/api/session` reports availability and sign-in. Live interview requests use OpenRouter; drafting runs an initial generation followed by a factual/editorial review. Source IDs are validated and evidence is attached verbatim from original answers by code. This establishes traceability, not proof that every interpretation is correct. Users see a proposed replacement before applying it, then approve each moment.
+Runtime credentials remain server-only. Supabase browser roles cannot directly read the database or Storage bucket. The app intentionally exposes shared demo content through server routes. Cross-origin writes are rejected; optimistic version conflicts return HTTP 409. The existing atomic quota now limits the entire shared demo to 40 agent requests per day; drafting uses two model calls per request.
 
-Supabase holds owner-scoped JSON story documents (including interview turns, drafts, moment history, approvals, training figures and photo context). Uploaded images live in a private Storage bucket and are served through authenticated owner-scoped API paths. Images are not sent to the model. Photo context can inform interview questions but is not story evidence until confirmed in an answer.
+Live questions use the supplied answers. Drafting includes an editorial check, validates source IDs, and attaches exact source answers in code. Users review proposed changes before applying and approving moments. Images are not sent to the model. Photo context can inform questions but must be confirmed in an answer before becoming story evidence.
 
-Cloud writes use optimistic versions. Browser storage remains a recovery copy when cloud saving fails. Mock mode remains browser-local. Cloud photo links in exported JSON require sign-in; export does not currently bundle downloaded cloud image bytes.
+Browser copies remain available when a cloud save fails. Export contains shared cloud photo links, not downloaded image bytes. This demo has no private-account storage, cross-user separation, or access recovery flow.
 
-## Database installation
+## Operations
 
-`supabase/migrations/20261029190000_story_service.sql` is the prepared initial migration. It has NOT yet been applied. CLI 2.122.0 is pinned and initialized. Run `npm run db:login`, then `npm run db:link` to authenticate and link. `npm run db:plan` previews pending changes; `npm run db:deploy` applies them. Both push commands explicitly target pmxcsvvsdzrzmuokfjhk and skip vault updates. Do not apply it through both the dashboard and CLI without reconciling migration history.
+Credentials belong in ignored `.env.local` / `server/.dev.vars` locally, and Sites runtime secrets in production: `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`.
 
-The Data API secret cannot run DDL. Deployment requires a database connection or authenticated Supabase management/CLI access. Runtime uses Sites-provided user identity; Supabase browser roles receive no access to these tables. RLS is enabled and direct access is restricted to service_role. The server must filter every record and storage path by verified Sites identity because service_role bypasses RLS.
+Supabase CLI 2.122.0 is pinned. The initial schema and PT409 conflict migrations are applied. No schema change is required for shared-demo mode. Use `npm run db:plan` before future migrations. The source GitHub repository stays private; the hosted demo remains public.
 
-The migration includes atomic per-user daily request reservations (40 agent requests; drafting uses two model calls). It also creates the private photo bucket. No tables are dropped and no existing stories are deleted.
+Run `npm test` and `node --env-file=.env.local scripts/check-cloud.mjs`. The integration check writes a small fictional QA story and image. It verifies shared reads, version conflicts, photo upload/retrieval, and denial of direct public-key table access.
 
-## Configuration
+## Hosted checkpoint
 
-Keep local credentials in ignored `.env.local` and server `.dev.vars`; production credentials belong in Sites runtime secrets. Never ship these files in public assets or commit them.
-
-Required server variables: `OPENROUTER_API_KEY`, `OPENROUTER_MODEL`, `SUPABASE_URL`, `SUPABASE_SECRET_KEY`. The publishable key is not needed by this server-mediated version.
-
-## Local development
-
-- Run `npm test` at the repo root.
-- Copy `dist/` into `server/public/` after browser-source changes.
-- Use the Sites dependency/build helpers from the server directory.
-- Run `npm run dev -- --port 4180` from server for local QA. Local Sites sign-in is simulated; production identity is provided by Sites dispatch.
-
-## Verification completed
-
-- Both configured API credentials returned successful responses.
-- 39 automated tests pass, including source validation, rejected unauthorized/cross-origin requests and owner filtering.
-- Supported server production build passed.
-- Browser QA confirmed photo context persists and appears in the viewer; training defaults to miles.
-- A real first-5K interview question, initial draft and seven-moment reviewed draft were generated and source references validated. The reviewed draft still overstated a qualifier (less concerned became not worried); the prompt now explicitly preserves degree and uncertainty, and athlete review remains required. Editorial review caught an unsupported negative assertion, motivating a second model review. Exact source evidence is now retrieved by code rather than reproduced by the model.
-
-## Remaining before publishing
-
-Apply migration; test cloud save/reload and optimistic conflicts, photo upload/private retrieval, and the live question-to-draft-to-approval loop. Configure hosted runtime secrets, migrate the existing Site source to the server build, then deploy and verify production sign-in and ownership. Keep the current public demo in place until these checks pass.
+Version 6 is deployed at https://athlete-stories-will-demo.cheeky-field-8475.chatgpt.site with source commit `a6af1025759529692b78904b8c6f91eef83c3f0f` and runtime environment revision 1. Hosted browser verification confirmed no-login activation, cloud saving, and a real adaptive OpenRouter question. Forty automated tests and Supabase integration checks passed before deployment.

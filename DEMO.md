@@ -1,38 +1,10 @@
 # Recording and judge walkthrough
 
-## Before recording
+1. Open the finished Alex story. Explain that it was curated through interview/editorial work and uses synthetic illustrations.
+2. Return home and open the first-5K seed at Interview. Choose Use live AI interview. No sign-in is required; all live stories and photos are shared demo material.
+3. Ask the next question. Show that it uses existing answers; answer or go directly to draft review. Live drafting can take a minute because it includes an editorial check.
+4. Compare the current and proposed story. Apply drafts, inspect original evidence and framing, make an edit, then approve moments.
+5. Add a photo, describe its context, and tag it to a moment. Open the visual story and approve the assembled version.
+6. Reload and resume the saved cloud story. Mock mode remains available without login.
 
-Open the deployed homepage in a fresh browser profile or a new browser with no saved demo stories. Confirm the STP link, a sample story, and the start form load. Keep one local photo available for upload. Site storage is browser-local; the same browser used during rehearsal will retain rehearsal stories.
-
-## Three-to-four minute sequence
-
-1. **The result (45 seconds):** Open the finished STP example. Show the story/preparation overview, select Feeling the miles, then The finish. Explain that this example was curated through interview and editorial work; it is the target output quality, not output generated live by this simulated interviewer.
-2. **The service (30 seconds):** Return to the homepage. Explain short form, interview, review, photos, and final story. State that this recording uses mocked model behavior and browser-local persistence.
-3. **A real interaction (60 seconds):** Start a new short story. Give a summary and a personal-context answer mentioning friends. Show the relevant follow-up. Use Review now rather than pretending a whole interview took place.
-4. **Athlete control (45 seconds):** Edit one heading, expand its source answer, approve moments, attach a photo, preview and approve the result. Refresh and resume if time allows.
-5. **Data flexibility (30 seconds):** Open the hiking example. Show its real fixture-derived training chart and explain that interview totals produce cards, not invented weekly records. The hike turned around; the story does not force a victory ending.
-
-## What judges can try
-
-- Start a story without creating an account or supplying an API key.
-- Compare a support-related answer with a first-attempt or difficulty-related answer.
-- Skip questions and review early.
-- Edit a moment and check that it needs approval again.
-- Add more interview answers after review and see that moments must be refreshed.
-- Upload an image, retag it, and see it in the correct moment.
-- Leave training figures empty, or enter totals without inventing a chart.
-- Reload and resume; export a JSON copy.
-
-## Claims to avoid
-
-Do not call the interview live AI, the local save a Supabase integration, a story approval public publication, or the sample data a live activity connection. Source code is kept private until the owner opens it for judging. A hosted static app does not require the repository to be public, but GitHub Pages availability for a private repo depends on the owner's plan.
-
-## Seeded walkthrough recording path
-
-1. Explore Alex’s completed story from the main hero link.
-2. Return home. Under “Make your version of Alex’s story,” choose Preview to see the editable starting copy, then Edit story and Interview to inspect its source answers.
-3. Alternatively start the first-5K seed at Interview. Open Personal Context and Why, change its answer, and choose Review proposed changes at the bottom.
-4. Compare the old and proposed moment. Apply, approve the changed moment, add/tag a photo, and preview.
-5. Start another seed copy to demonstrate that the original and prior saved copies remain intact.
-
-The interview is still simulated. Changed drafts use source answers verbatim; this walkthrough does not claim live editorial reasoning.
+Do not claim that model review guarantees factual accuracy, that sample training records are measured activity data, or that approval publishes a public share link. No activity-data sync or image/video generation is active. The source GitHub repository remains private.

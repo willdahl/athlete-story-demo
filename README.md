@@ -8,31 +8,28 @@ Open [the hosted demo](https://athlete-stories-will-demo.cheeky-field-8475.chatg
 
 ## What actually works
 
-- Answer-dependent **simulated** interview with explicit coverage areas.
-- Source-linked moment drafts, editing and athlete approval.
-- Real browser-local image selection, moment association and preview.
-- Persistent browser-local save/resume with IndexedDB.
-- Metric cards and weekly charts when the supplied data supports them.
-- Final story preview and JSON export.
+- Live, adaptive OpenRouter interviews without sign-in, with an explicit browser-local mock mode.
+- Source-linked AI drafts, a second model review, before/after comparison, editing and athlete approval.
+- Private Supabase story storage and photo uploads, plus a browser recovery copy.
+- Optional photo context, moment tagging and full-image display.
+- Training metrics default to miles. Weekly charts require supplied weekly records.
+- Curated Alex showcase and independently editable Alex/first-5K seed copies.
 
-## What is mocked or planned
+Live requests use a server-held OpenRouter key. Answers go to OpenRouter; images do not. Source IDs are checked and original evidence is attached by code. This provides traceability, not a guarantee of accurate interpretation; athlete review remains required. Approving a story does not publish it publicly.
 
-No live AI model, OpenRouter connection, external activity sync, Supabase account, cloud upload or cross-device persistence is active in this deadline demo. The interview uses deterministic rules. Its output is based on the answers you supply; it is not proof of generative interview quality. Example people, events and training records are synthetic. No image/video generation is running.
-
-The intended service uses Supabase Postgres/Auth/Storage and server-side OpenRouter orchestration, with an optional adapter for connected activity evidence. The browser-local adapter demonstrates the flow without representing that backend as complete.
-
-Your answers and selected photos remain in this browser's local storage. Clearing site data removes them. Export to retain a copy. This is not secure multi-user account storage; do not enter sensitive information on a shared device. Uploaded images are not sent to a model or remote storage by this app. No public story publishing occurs when you approve a story.
+Activity connectors and image/video generation remain future work. Examples and illustrations are synthetic. Exported cloud-photo URLs are shared demo links; JSON export does not bundle downloaded cloud image bytes. Browser copies remain in the browser profile and can be removed with site data.
 
 ## Run locally
 
-Node 22+ and Python 3 are sufficient; no package installation is required.
+For mock-only UI work:
 
 ```sh
+npm ci
 npm test
 npm run preview
 ```
 
-Open http://127.0.0.1:4180/ . Serve over HTTP instead of opening index.html directly because the app uses ES modules.
+For the live server, follow [LIVE_SERVICE.md](LIVE_SERVICE.md). CLI authentication and migrations are documented in [supabase/README.md](supabase/README.md). Credentials stay outside Git. The production service is a shared fictional demo without sign-in; Supabase CLI login is only for database administration.
 
 ## Source structure
 
@@ -41,10 +38,14 @@ Open http://127.0.0.1:4180/ . Serve over HTTP instead of opening index.html dire
 - `dist/examples.js`: explicitly fictional scenarios.
 - `dist/charts.js`: deterministic metrics and chart rendering.
 - `dist/storage.js`: IndexedDB persistence adapter.
+- `dist/live.js`: shared demo API and photo upload client.
+- `server/lib/story-agent.mjs`: interview, drafting, editorial review and evidence validation.
+- `server/lib/story-api.mjs`: authenticated, owner-scoped cloud API.
+- `supabase/migrations/`: versioned database schema and access restrictions.
 - `test/`: behavior and provenance checks.
 - `.github/workflows/pages.yml`: automated tests.
 
-This is a static app compatible with GitHub Pages and other static hosts. All application assets use relative paths so project-site hosting works. The working project’s private transcripts and authoring materials are intentionally excluded from this repository.
+The browser assets can run in mock mode on a static host. Live mode requires the supported Sites server in `server/`. The working project’s private transcripts and authoring materials are intentionally excluded from this repository.
 
 ## Finished STP example
 
@@ -52,9 +53,9 @@ This is a static app compatible with GitHub Pages and other static hosts. All ap
 
 ## Hosting and repository access
 
-The demo is hosted separately with public link access for judges. This GitHub repository stays private until the owner explicitly opens it for judging. GitHub Pages is disabled because the current account plan does not support Pages from this private repository. Hosting uses the same `dist/` assets; publishing changes requires a separate deployment.
+The demo is hosted separately with public link access for judges. This GitHub repository stays private until the owner explicitly opens it for judging. GitHub Pages is disabled because the current account plan does not support Pages from this private repository. Hosting builds the Sites server with `dist/` copied to its public assets; publishing requires a separate deployment.
 
-## Visual story viewer
+## Visual story experience
 
 Created stories now use the Alex-inspired journey layout: a persistent moment navigator, overview story and preparation panes, image-led moment views, and a lower map area. When no locations are supplied, the lower area shows the ordered moments instead of inventing a route. Review offers optional people/context and latitude/longitude fields. Only approved moments appear; changing those details requires approval again. Photos expand for closer viewing. The STP example remains the curated reference and primary entry point.
 

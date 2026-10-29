@@ -2,8 +2,8 @@ import {runAgent} from './story-agent.mjs';
 const json=(data,status=200)=>Response.json(data,{status,headers:{'Cache-Control':'no-store'}});
 const uuid=value=>typeof value==='string'&&/^[\da-f]{8}-[\da-f]{4}-[\da-f]{4}-[\da-f]{4}-[\da-f]{12}$/i.test(value);
 async function db(env,path,options={}){
- const r=await fetch(env.SUPABASE_URL+'/rest/v1/'+path,{...options,headers:{apikey:env.SUPABASE_SECRET_KEY,'Content-Type':'application/json',...options.headers}});
- if(!r.ok){const detail=await r.json().catch(()=>({}));if(detail.code==='40001')throw Object.assign(Error('This story changed in another tab. Reopen it before saving.'),{status:409});throw Error('Cloud storage is not ready or is unavailable. Your browser copy is retained.');}
+ const r=await fetch(env.SUPABASE_URL+'/rest/v1/'+path,{...options,signal:AbortSignal.timeout(20000),headers:{apikey:env.SUPABASE_SECRET_KEY,'Content-Type':'application/json',...options.headers}});
+ if(!r.ok){const detail=await r.json().catch(()=>({}));if(detail.code==='PT409')throw Object.assign(Error('This story changed in another tab. Reopen it before saving.'),{status:409});throw Error('Cloud storage is not ready or is unavailable. Your browser copy is retained.');}
  return r.status===204?null:r.json();
 }
 function validateProject(p){
@@ -20,10 +20,10 @@ async function readBody(request,limit=700000){
 export async function handleApi(request,env){
  const url=new URL(request.url),path=url.pathname;
  if(!path.startsWith('/api/'))return null;
- const owner=request.headers.get('oai-authenticated-user-id');
+ // Public fictional demo namespace; never expose previously account-scoped stories.
+ const owner='shared-fictional-demo-v1';
  const configured=Boolean(env.OPENROUTER_API_KEY&&env.SUPABASE_URL&&env.SUPABASE_SECRET_KEY);
- if(path==='/api/session')return json({liveAvailable:configured,signedIn:!!owner,signIn:'/signin-with-chatgpt?return_to=%2Findex.html'});
- if(!owner)return json({error:'Sign in to use live interviews and cloud saving.'},401);
+ if(path==='/api/session')return json({liveAvailable:configured,sharedDemo:true});
  if(!configured)return json({error:'Live services are not configured. Mock mode remains available.'},503);
  if(!['GET','POST'].includes(request.method))return json({error:'Method not allowed.'},405);
  if(request.method==='POST'&&(request.headers.get('Origin')!==url.origin||request.headers.get('X-Story-Request')!=='1'))return json({error:'This request must come from the story app.'},403);
@@ -41,23 +41,23 @@ export async function handleApi(request,env){
    const {action,project}=JSON.parse(new TextDecoder().decode(await readBody(request)));
    if(!['question','draft'].includes(action))return json({error:'Unknown interview action.'},400);
    validateProject(project);
-   if(!await db(env,'rpc/reserve_athlete_ai_call',{method:'POST',body:JSON.stringify({p_owner:owner})}))return json({error:'Your demo has reached its 40 live requests for today. You can still review, edit and use mock mode.'},429);
+   if(!await db(env,'rpc/reserve_athlete_ai_call',{method:'POST',body:JSON.stringify({p_owner:owner})}))return json({error:'The shared demo has reached its 40 live requests for today. You can still review, edit and use mock mode.'},429);
    const result=await runAgent(action,project,env);return json(result);
   }
   const photo=path.match(/^\/api\/photos\/([\da-f-]+)\/([\da-f-]+)$/i);
   if(photo&&uuid(photo[1])&&uuid(photo[2])){
-   // Scope storage paths to the platform-verified user. No caller-supplied owner.
+   // Use the shared demo namespace; ignore caller-supplied identities.
    const key=[encodeURIComponent(owner),photo[1],photo[2]].join('/');
    const headers={apikey:env.SUPABASE_SECRET_KEY,Authorization:`Bearer ${env.SUPABASE_SECRET_KEY}`};
    if(request.method==='GET'){
-    const r=await fetch(env.SUPABASE_URL+'/storage/v1/object/athlete-photos/'+key,{headers});
+    const r=await fetch(env.SUPABASE_URL+'/storage/v1/object/athlete-photos/'+key,{headers,signal:AbortSignal.timeout(20000)});
     if(!r.ok)return json({error:'Photo unavailable.'},404);
-    return new Response(r.body,{headers:{'Content-Type':r.headers.get('Content-Type')||'application/octet-stream','Cache-Control':'private, max-age=300','X-Content-Type-Options':'nosniff'}});
+    return new Response(r.body,{headers:{'Content-Type':r.headers.get('Content-Type')||'application/octet-stream','Cache-Control':'no-store','X-Content-Type-Options':'nosniff'}});
    }
    const type=request.headers.get('Content-Type');
    if(!/^image\/(jpeg|png|webp|gif|avif)$/.test(type||''))return json({error:'Choose a supported image.'},400);
    const body=await readBody(request,8*1024*1024);
-   const r=await fetch(env.SUPABASE_URL+'/storage/v1/object/athlete-photos/'+key,{method:'POST',headers:{...headers,'Content-Type':type,'x-upsert':'true'},body});
+   const r=await fetch(env.SUPABASE_URL+'/storage/v1/object/athlete-photos/'+key,{method:'POST',headers:{...headers,'Content-Type':type,'x-upsert':'true'},body,signal:AbortSignal.timeout(30000)});
    if(!r.ok)throw Error('Photo upload failed. The original is still saved in this browser.');
    return json({url:path});
   }
