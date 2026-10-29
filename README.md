@@ -53,3 +53,11 @@ This is a static app compatible with GitHub Pages and other static hosts. All ap
 ## Hosting and repository access
 
 The demo is hosted separately with public link access for judges. This GitHub repository stays private until the owner explicitly opens it for judging. GitHub Pages is disabled because the current account plan does not support Pages from this private repository. Hosting uses the same `dist/` assets; publishing changes requires a separate deployment.
+
+## Visual story viewer
+
+Created stories now use the Alex-inspired journey layout: a persistent moment navigator, overview story and preparation panes, image-led moment views, and a lower map area. When no locations are supplied, the lower area shows the ordered moments instead of inventing a route. Review offers optional people/context and latitude/longitude fields. Only approved moments appear; changing those details requires approval again. Photos expand for closer viewing. The STP example remains the curated reference and primary entry point.
+
+## Preserved baseline
+
+The original hosted demo is preserved at Git tag `snapshot-before-alex-viewer` (commit `6f97275`). Sites version 1 is also retained as the pre-update deployment. The GitHub repository remains private.

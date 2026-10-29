@@ -9,3 +9,10 @@ October 29, 2026.
 - Hiking sample renders supplied training totals and weekly series, with no required photos.
 
 Deployment verification is recorded separately after hosting succeeds. Mock tests do not evaluate live model quality or production authorization.
+
+## Alex-layout viewer update
+
+- 24 automated tests pass, including approved-only rendering, strict coordinate validation, optional supporter panes, and HTML/media safety.
+- Browser verified: existing saved stories open in the new viewer; selecting a moment updates the shared panes; source text and training data remain intact; supplied coordinates render numbered map pins; editing geographic context clears approval and blocks preview until approved.
+- Desktop layout checked at 988 × 844. The pane grid was corrected to prevent training content from extending beyond the viewport.
+- Unlocated stories use a chronological strip, not a fabricated map route. New moments have no supporter pane without explicit supporter context.

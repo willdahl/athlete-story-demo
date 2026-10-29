@@ -1,0 +1,41 @@
+import {renderTraining} from './charts.js';
+export const escapeHTML = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const e=escapeHTML;
+export const safePhoto = value => typeof value==='string'&&(/^data:image\/(png|jpeg|webp|gif|avif);base64,/i.test(value)||/^(?:\.\/)?assets\/[a-zA-Z0-9._/-]+$/.test(value))?value:'';
+export function locationOf(moment){
+ const lat=moment.latitude,lng=moment.longitude;
+ return typeof lat==='number'&&typeof lng==='number'&&Number.isFinite(lat)&&Number.isFinite(lng)&&Math.abs(lat)<=90&&Math.abs(lng)<=180?[lat,lng]:null;
+}
+export function storyModel(project){
+ const moments=(project.moments||[]).filter(m=>m.approved);
+ const section=id=>moments.find(m=>(m.sourceTurnIds||[]).some(source=>(project.turns||[]).some(t=>t.id===source&&t.questionId?.split('.followup.')[0]===id)));
+ const photos=m=>(project.media||[]).filter(a=>a.momentId===m?.id&&safePhoto(a.dataUrl));
+ return {moments,personal:section('why')||section('summary')||moments[0],training:section('training'),photos,points:moments.flatMap((m,i)=>locationOf(m)?[{id:m.id,label:m.locationName||m.title,position:locationOf(m),number:i+1}]:[])};
+}
+const beatLabels={event:'The experience',why:'Personal context',preparation:'Preparation',leadup:'Pre-game',experience:'Along the way',outcome:'The outcome',after:'What happened after',reflection:'Reflections'};
+export const beatLabel=moment=>moment.navigationLabel||beatLabels[moment.id.split(':').at(-1)]||moment.title;
+function imageHTML(asset,large=false){return asset?`<button class="journey-photo ${large?'large':''}" data-story-photo="${e(asset.id)}" aria-label="Enlarge ${e(asset.filename)}"><img src="${e(safePhoto(asset.dataUrl))}" alt="${e(asset.filename)}"></button>`:'';}
+function textHTML(moment,name){return moment?`<blockquote class="journey-quote"><p>${e(moment.text)}</p><cite>${e(name)}</cite></blockquote>`:'';}
+export function renderJourney(project,selectedId='overview'){
+ const model=storyModel(project),selected=model.moments.find(m=>m.id===selectedId),overview=!selected;
+ const allPhotos=model.moments.flatMap(model.photos);
+ const personalPhoto=model.photos(model.personal)[0]||allPhotos[0];
+ const trainingPhoto=model.photos(model.training)[0];
+ const displayName=project.name.replace(/ · .*sample$/,'');
+ const panes=overview?`<section class="journey-pane overview-story"><header><span class="eyebrow">${e(displayName)} / Your story</span>${model.personal?`<button class="text-button" data-story-select="${e(model.personal.id)}">Read your story ↗</button>`:''}</header><h2>${e(project.why||model.personal?.title||project.event)}</h2>${imageHTML(personalPhoto)}${textHTML(model.personal,displayName)}</section><section class="journey-pane overview-training"><header><span class="eyebrow">The preparation</span>${model.training?`<button class="text-button" data-story-select="${e(model.training.id)}">Explore training ↗</button>`:''}</header><h2>${Number.isFinite(project.metrics?.preparationWeeks)?`${e(project.metrics.preparationWeeks)} weeks of showing up.`:'Training and preparation'}</h2>${imageHTML(trainingPhoto)}${renderTraining(project.metrics,project.activity)}${!trainingPhoto&&model.training?textHTML(model.training,displayName):''}</section>`:
+ `<section class="journey-pane moment-main ${selected.supportText?'with-support':''}"><header><span class="eyebrow">${e(displayName)} / ${String(model.moments.indexOf(selected)+1).padStart(2,'0')}</span>${selected.locationName?`<span class="journey-place">${e(selected.locationName)}</span>`:''}</header><h2>${e(selected.title)}</h2><div class="moment-composition ${model.photos(selected).length?'with-image':''}">${model.photos(selected).length?`<div class="journey-gallery">${model.photos(selected).map(a=>imageHTML(a,true)).join('')}</div>`:''}<div class="journey-narrative">${textHTML(selected,displayName)}${selected===model.training?renderTraining(project.metrics,project.activity):''}</div></div></section>${selected.supportText?`<section class="journey-pane supporter-pane"><header><span class="person-initial">${e((selected.supportName||'?').slice(0,1))}</span><span class="eyebrow">${e(selected.supportName||'Alongside you')}</span></header><p class="support-context">${e(selected.supportText)}</p></section>`:''}`;
+ return `<article class="journey-viewer" aria-label="${e(displayName)}’s visual story"><header class="journey-title"><div><p class="eyebrow">${e(displayName)}’s journey${project.date?` · ${e(project.date)}`:''}</p><h1>${e(project.event)}</h1></div><span class="journey-audience">For ${e(displayName)}</span></header><div class="journey-book"><nav class="journey-spine" aria-label="Journey moments"><button data-story-select="overview" ${overview?'aria-current="true"':''}><span>◎</span>Overview</button>${model.moments.map((m,i)=>`<button data-story-select="${e(m.id)}" title="${e(m.title)}" ${selected?.id===m.id?'aria-current="true"':''}><span>${String(i+1).padStart(2,'0')}</span><span class="beat-label">${e(beatLabel(m))}</span></button>`).join('')}</nav><div class="journey-page"><div class="journey-panes ${overview?'overview':selected.supportText?'has-support':'single'}">${panes}</div><section class="journey-geography" aria-label="Journey context"><header><span>${model.points.length?'Places in your story':'Your journey'}</span><small>${model.points.length?'Athlete-added locations · no route inferred':'Moments in order · locations not added'}</small></header>${model.points.length?'<div id="journey-map" aria-label="Map of athlete-added moment locations"></div>':`<div class="journey-sequence">${model.moments.map((m,i)=>`<button data-story-select="${e(m.id)}" ${selected?.id===m.id?'aria-current="true"':''}><span>${String(i+1).padStart(2,'0')}</span><strong>${e(beatLabel(m))}</strong></button>`).join('')}</div>`}</section></div></div></article>`;
+}
+let map;
+export function destroyJourneyMap(){if(map){map.remove();map=null;}}
+export function mountJourneyMap(project,selectedId,onSelect){
+ const target=document.querySelector('#journey-map'),L=globalThis.L;
+ if(!target||!L)return;
+ const {points}=storyModel(project);if(!points.length)return;
+ map=L.map(target,{scrollWheelZoom:false});
+ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'}).addTo(map);
+ for(const point of points){const marker=L.marker(point.position,{icon:L.divIcon({className:'journey-map-marker',html:`<span class="${point.id===selectedId?'selected':''}">${point.number}</span>`,iconSize:[34,34],iconAnchor:[17,17]})}).addTo(map);marker.bindTooltip(e(point.label));marker.on('click',()=>onSelect(point.id));}
+ const selected=points.find(p=>p.id===selectedId);
+ if(selected)map.setView(selected.position,12);else if(points.length===1)map.setView(points[0].position,12);else map.fitBounds(points.map(p=>p.position),{padding:[32,32],maxZoom:12});
+ requestAnimationFrame(()=>map?.invalidateSize());
+}
