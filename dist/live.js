@@ -1,0 +1,30 @@
+let session;
+export async function liveSession(){
+ try{const r=await fetch('/api/session');if(!r.ok)return {liveAvailable:false,signedIn:false};session=await r.json();return session;}catch{return {liveAvailable:false,signedIn:false};}
+}
+async function api(path,body,options={}){
+ const response=await fetch(path,{method:'POST',headers:{'Content-Type':'application/json','X-Story-Request':'1',...options.headers},body:options.raw||JSON.stringify(body)});
+ const data=await response.json();if(!response.ok)throw Error(data.error||'The live service could not complete this request.');return data;
+}
+export function agentProject(project){
+ return {...project,media:(project.media||[]).map(({dataUrl,...a})=>a),overviewPhoto:undefined,momentHistory:undefined,pendingMomentUpdate:undefined};
+}
+export async function callAgent(action,project){return api('/api/agent',{action,project:agentProject(project)});}
+export async function saveCloud(project){
+ const copy=structuredClone(project);
+ for(const asset of copy.media){
+  if(asset.dataUrl?.startsWith('data:image/')){
+   const blob=await (await fetch(asset.dataUrl)).blob();
+   const result=await api(`/api/photos/${copy.id}/${asset.id}`,null,{headers:{'Content-Type':blob.type},raw:blob});
+   if(copy.overviewPhoto===asset.dataUrl)copy.overviewPhoto=result.url;
+   asset.dataUrl=result.url;
+  }
+ }
+ const {version}=await api('/api/stories',{project:copy,version:copy.cloudVersion||0});
+ return {...copy,cloudVersion:version};
+}
+export async function cloudStories(){
+ const state=await liveSession();if(!state.signedIn||!state.liveAvailable)return [];
+ const response=await fetch('/api/stories');const data=await response.json();if(!response.ok)throw Error(data.error);
+ return data.map(row=>({...row.document,cloudVersion:row.version}));
+}

@@ -13,7 +13,7 @@ const sourceLabel = source => source === 'synthetic_fixture' ? 'Synthetic exampl
 /** Returns safe, self-contained HTML. Accepts only numeric values, not numeric-looking strings. */
 export function renderTraining(metrics = {}, activity = 'cycling') {
   if (!metrics || typeof metrics !== 'object' || Array.isArray(metrics)) metrics = {};
-  const distanceUnit=metrics.distanceUnit==='miles'?'miles':'km';
+  const distanceUnit=metrics.distanceUnit==='km'?'km':'miles';
   if(distanceUnit==='miles')metrics={...metrics,distanceKm:finite(metrics.distanceKm)?metrics.distanceKm/1.609344:metrics.distanceKm,weekly:Array.isArray(metrics.weekly)?metrics.weekly.map(row=>row&&typeof row==='object'?{...row,distanceKm:finite(row.distanceKm)?row.distanceKm/1.609344:row.distanceKm}:row):metrics.weekly};
   const sport = Object.hasOwn(sports, activity) ? sports[activity] : {distance:'training distance', time:'time training'};
   const cards = [

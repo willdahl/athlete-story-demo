@@ -1,7 +1,7 @@
 import {renderTraining} from './charts.js';
 export const escapeHTML = value => String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const e=escapeHTML;
-export const safePhoto = value => typeof value==='string'&&(/^data:image\/(png|jpeg|webp|gif|avif);base64,/i.test(value)||/^(?:\.\/)?(?:stp\/)?assets\/[a-zA-Z0-9._/-]+$/.test(value))?value:'';
+export const safePhoto = value => typeof value==='string'&&(/^data:image\/(png|jpeg|webp|gif|avif);base64,/i.test(value)||/^(?:\.\/)?(?:stp\/)?assets\/[a-zA-Z0-9._/-]+$/.test(value)||/^\/api\/photos\/[a-f0-9-]+\/[a-f0-9-]+$/i.test(value))?value:'';
 export function locationOf(moment){
  const lat=moment.latitude,lng=moment.longitude;
  return typeof lat==='number'&&typeof lng==='number'&&Number.isFinite(lat)&&Number.isFinite(lng)&&Math.abs(lat)<=90&&Math.abs(lng)<=180?[lat,lng]:null;

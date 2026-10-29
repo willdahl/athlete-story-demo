@@ -4,7 +4,7 @@ import {renderTraining} from '../dist/charts.js';
 
 test('totals remain totals rather than fabricated weekly history',()=>{
  const html=renderTraining({distanceKm:4830,trainingHours:180,trainingDays:75,preparationWeeks:20,source:'athlete_reported'},'cycling');
- assert.match(html,/4,830/);assert.match(html,/75/);assert.match(html,/Athlete-reported/);
+ assert.match(html,/3,001.2/);assert.match(html,/75/);assert.match(html,/Athlete-reported/);
  assert.doesNotMatch(html,/<svg/);assert.match(html,/weekly chart needs weekly records/);assert.match(html,/time training/);
 });
 test('series are sorted, accessible and missing weeks stay missing',()=>{
@@ -29,7 +29,7 @@ test('duplicates never silently pick one weekly value',()=>{
 });
 test('reported zero is distinct from missing and malformed inputs are safe',()=>{
  const html=renderTraining({distanceKm:0,weekly:[{week:1,distanceKm:0}]});
- assert.match(html,/Week 1: 0 km/);assert.doesNotMatch(html,/NaN|Infinity/);
+ assert.match(html,/Week 1: 0 miles/);assert.doesNotMatch(html,/NaN|Infinity/);
  for(const value of [null,undefined,[],false,'no data'])assert.match(renderTraining(value),/No training figures added yet/);
 });
 
@@ -50,3 +50,9 @@ test('mile display converts canonical kilometers without changing the supplied r
  const metrics={distanceKm:16.09344,distanceUnit:'miles',source:'synthetic_fixture',weekly:[{week:1,distanceKm:16.09344}]};
  const html=renderTraining(metrics,'cycling');assert.match(html,/10.*miles/s);assert.match(html,/Week 1: 10 miles/);assert.equal(metrics.distanceKm,16.09344);
 });
+
+ test('miles are the default for totals, charts and table while explicit kilometers remain supported',()=>{
+ const metrics={distanceKm:16.09344,weekly:[{week:1,distanceKm:16.09344}]};
+ const html=renderTraining(metrics);assert.match(html,/Week 1: 10 miles/);assert.match(html,/distance in miles/);assert.match(html,/>10 miles<\/td>/);
+ assert.match(renderTraining({...metrics,distanceUnit:'km'}),/Week 1: 16.1 km/);assert.equal(metrics.distanceKm,16.09344);
+ });
