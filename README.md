@@ -42,7 +42,7 @@ Open http://127.0.0.1:4180/ . Serve over HTTP instead of opening index.html dire
 - `dist/charts.js`: deterministic metrics and chart rendering.
 - `dist/storage.js`: IndexedDB persistence adapter.
 - `test/`: behavior and provenance checks.
-- `.github/workflows/pages.yml`: automated tests; optional Pages deployment when `ENABLE_GITHUB_PAGES` is set to `true`.
+- `.github/workflows/pages.yml`: automated tests.
 
 This is a static app compatible with GitHub Pages and other static hosts. All application assets use relative paths so project-site hosting works. The working project’s private transcripts and authoring materials are intentionally excluded from this repository.
 
