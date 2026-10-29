@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {renderTraining} from '../dist/charts.js';
+import {renderTraining,editTrainingTotal} from '../dist/charts.js';
 
 test('totals remain totals rather than fabricated weekly history',()=>{
  const html=renderTraining({distanceKm:4830,trainingHours:180,trainingDays:75,preparationWeeks:20,source:'athlete_reported'},'cycling');
@@ -56,3 +56,14 @@ test('mile display converts canonical kilometers without changing the supplied r
  const html=renderTraining(metrics);assert.match(html,/Week 1: 10 miles/);assert.match(html,/distance in miles/);assert.match(html,/>10 miles<\/td>/);
  assert.match(renderTraining({...metrics,distanceUnit:'km'}),/Week 1: 16.1 km/);assert.equal(metrics.distanceKm,16.09344);
  });
+
+test('editing totals preserves weekly data and its original provenance',()=>{
+ const metrics={source:'synthetic_fixture',distanceKm:100,weekly:[{week:1,distanceKm:100}]};
+ const edited=editTrainingTotal(metrics,'distanceKm',200);
+ assert.equal(edited.distanceKm,200*1.609344);assert.deepEqual(edited.weekly,metrics.weekly);
+ assert.equal(edited.weeklySource,'synthetic_fixture');assert.equal(edited.source,'athlete_reported');assert.equal(metrics.distanceKm,100);
+ assert.match(renderTraining(edited),/Weekly records: Synthetic/);
+});
+test('training weeks expose keyboard-accessible controls',()=>{
+ const html=renderTraining({weekly:[{week:1,distanceKm:10}]});assert.match(html,/role="button" tabindex="0" data-training-week="1"/);
+});

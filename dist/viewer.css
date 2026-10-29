@@ -16,3 +16,19 @@ body.viewing .site-header{height:54px;padding:0 22px}body.viewing{overflow:hidde
 @media(max-width:1100px){.overview-content{grid-template-columns:1fr}.overview-content .journey-photo img{height:clamp(200px,30vh,290px)}.journey-panes.overview .journey-pane{overflow:auto}}
 @media(max-width:760px){.journey-panes.overview{grid-template-columns:1fr}.overview-content{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}.journey-panes.overview .journey-pane{overflow:visible}.overview-content .journey-photo img{height:260px}}
 @media(max-width:480px){.overview-content{grid-template-columns:1fr}.overview-content .journey-photo img{height:auto;max-height:360px}.journey-gallery .journey-photo img{height:auto;max-height:420px}}
+
+/* Training has its own visual detail view; the values table is secondary. */
+.training-dialog{width:min(1050px,94vw);max-width:94vw;max-height:90dvh;padding:24px;overflow:auto;color:var(--ink)}
+.training-dialog h2{font:clamp(28px,4vw,44px)/1.1 Georgia,serif;margin:4px 0 20px}
+.training-detail-intro.has-photo{display:grid;grid-template-columns:1fr 1fr;gap:24px;align-items:center}
+.training-detail-intro>img{width:100%;height:280px;object-fit:contain;background:#edf0e5;border-radius:8px}
+.training-dialog .training-metric-cards{grid-template-columns:repeat(4,1fr)!important}
+.training-dialog .training-weekly-chart svg{max-height:300px!important}
+[data-training-week]{cursor:pointer;outline:none}[data-training-week]:hover rect,[data-training-week]:focus rect,[data-training-week][aria-pressed] rect{fill:#b3653e}
+[data-training-week]:focus-visible{outline:2px solid #b3653e}
+.training-week-detail{margin-top:20px;padding:20px;background:#edf0e5;border-radius:10px}
+.training-week-detail h3{margin:0 0 14px;font:26px Georgia,serif}
+.training-sessions{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px}
+.training-sessions article{display:flex;flex-direction:column;gap:8px;padding:16px;background:var(--white);border-radius:8px}
+.training-sessions strong{font:26px Georgia,serif}.training-sessions time,.training-sessions span{font-size:13px}
+@media(max-width:650px){.training-detail-intro.has-photo{grid-template-columns:1fr}.training-detail-intro>img{height:230px}.training-dialog .training-metric-cards{grid-template-columns:1fr 1fr!important}.training-dialog{padding:16px}}

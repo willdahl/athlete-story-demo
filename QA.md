@@ -32,3 +32,7 @@ Browser verified: first-5K interview opens prefilled; changing its personal-cont
 Supersedes the account-sign-in behavior above. 40 tests pass. Real Supabase checks pass for anonymous shared saves/reads, photo uploads/reads, stale-write HTTP 409, and direct public-key denial. No guest sessions or additional database migration are required.
 
 Hosted version 6 verified on October 29, 2026: first-5K seed switched to live mode without sign-in, saved to Supabase, and returned a real OpenRouter follow-up grounded in its existing answers. Anonymous API availability and shared story reads return HTTP 200. The follow-up still used a double hyphen despite the editorial prompt; punctuation compliance is not guaranteed by prompting alone.
+
+## Restored training detail
+
+43 tests pass. Browser verified Alex’s training photo/story, metrics, interactive 20-week chart, and week 1 ride cards (34.2, 18.4, 22.1 miles). Weekly values remain collapsed by default. Editing totals preserves the supplied series with independent provenance. Missing session data is not invented.
