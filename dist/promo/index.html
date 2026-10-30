@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>athletestories</title>
+<meta name="description" content="Your effort deserves a story you can review, relive, and share with others.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;0,6..72,600;1,6..72,400&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --green:#173735; --green-deep:#102C2B; --green-mid:#234842;
+    --cream:#F6F1E7; --cream-deep:#EDE6D6; --sage:#AEC2BC; --leaf:#BEE2B0;
+    --ink:#173735; --paper:#F6F1E7;
+    --serif:"Newsreader", Georgia, "Times New Roman", serif;
+    --sans:"Instrument Sans", "Helvetica Neue", Arial, sans-serif;
+    --ease:cubic-bezier(.4,.05,.2,1);
+    --slow:1100ms; --mid:700ms; --fast:380ms;
+    --gutter:clamp(16px, 3vw, 48px);
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%;margin:0}
+  body{
+    font-family:var(--sans); color:var(--ink); background:var(--paper);
+    -webkit-font-smoothing:antialiased; overflow:hidden;
+  }
+  .app{
+    position:relative; width:100%; height:100dvh; display:flex; flex-direction:column;
+    background:var(--paper); color:var(--ink);
+    transition:background var(--slow) var(--ease), color var(--slow) var(--ease);
+  }
+  .app[data-act="dark"]{ --ink:var(--cream); --paper:var(--green); }
+  .app[data-act="end"]{ --ink:var(--green); --paper:var(--cream); }
+
+  /* Header */
+  .brand{
+    display:flex; align-items:baseline; gap:14px; padding:18px var(--gutter) 0;
+    font-family:var(--serif); font-size:clamp(20px,2.2vw,28px); font-weight:500; letter-spacing:-.01em;
+  }
+  .brand small{ font-family:var(--sans); font-size:clamp(12px,1.1vw,14px); opacity:.72; font-weight:400 }
+  @media (max-width:640px){ .brand small{display:none} }
+
+  /* Stage */
+  .stage{ position:relative; flex:1 1 auto; min-height:0; margin:8px var(--gutter) 0; overflow:visible }
+  .stage > *{ position:absolute; left:0; top:0; opacity:0; pointer-events:none;
+    transition: left var(--slow) var(--ease), top var(--slow) var(--ease),
+                width var(--slow) var(--ease), height var(--slow) var(--ease),
+                opacity var(--mid) var(--ease), transform var(--slow) var(--ease), filter var(--mid) var(--ease);
+  }
+  .stage > .on{ opacity:1 }
+
+  /* Tiles: one per training ride */
+  .tiles{ left:0; top:0; width:100%; height:100%; opacity:1; z-index:1 }
+  .tile{
+    position:absolute; left:0; top:0; width:10px; height:10px; border-radius:2px;
+    background:var(--green); opacity:0; transform:scale(.6);
+    transition: left var(--slow) var(--ease), top var(--slow) var(--ease), width var(--slow) var(--ease),
+                height var(--slow) var(--ease), opacity 500ms var(--ease), transform 500ms var(--ease),
+                background var(--mid) var(--ease);
+  }
+  .tile.on{ opacity:1; transform:scale(1) }
+  .tile.dim{ opacity:.16 }
+  .tile.faint{ opacity:.07 }
+  .app[data-act="dark"] .tile{ background:var(--sage) }
+  .app[data-act="dark"] .tile.src-l{ background:var(--leaf) }
+  .app[data-act="dark"] .tile.src-e{ background:#8FA7A0 }
+  .tile.long{ background:var(--green-deep) }
+
+  /* Tally */
+  .tally{ font-family:var(--sans); font-size:clamp(13px,1.15vw,17px); line-height:1.55; letter-spacing:.01em; white-space:nowrap }
+  .tally b{ font-family:var(--serif); font-weight:500; font-size:1.9em; display:inline-block; min-width:3.2ch; letter-spacing:-.015em; margin-right:4px }
+  .tally span{ display:block }
+
+  /* Photos */
+  .ph{ margin:0; overflow:hidden; border-radius:6px; background:var(--green-deep); box-shadow:0 1px 0 rgba(23,55,53,.08) }
+  .ph img{ width:100%; height:100%; object-fit:cover; display:block; transition:transform var(--slow) var(--ease), filter var(--mid) var(--ease) }
+  .ph figcaption{
+    position:absolute; left:10px; bottom:10px; padding:5px 9px; border-radius:4px;
+    background:rgba(246,241,231,.92); color:var(--green); font-size:clamp(11px,.95vw,13px); font-weight:500;
+    opacity:0; transition:opacity var(--mid) var(--ease); max-width:calc(100% - 20px);
+  }
+  .ph.labeled figcaption{ opacity:1 }
+  .ph.shade img{ filter:brightness(.42) saturate(.7) }
+
+  /* Silos */
+  .silo{ border:1.5px solid rgba(174,194,188,.5); border-radius:8px; }
+  .silo span{ position:absolute; left:12px; top:10px; font-size:clamp(11px,1vw,14px); font-weight:500; color:var(--sage) }
+  .ghost{ border:1.5px dashed rgba(174,194,188,.55); border-radius:6px; display:grid; place-items:center;
+    font-family:var(--serif); font-size:clamp(40px,6vw,88px); color:var(--leaf); font-weight:500 }
+
+  /* Viewfinder and the darkness outside it */
+  .mask{ background:rgba(16,44,43,.74); transition:opacity var(--mid) var(--ease) }
+  .vf{ border-radius:3px; }
+  .vf::before,.vf::after,.vf i::before,.vf i::after{
+    content:""; position:absolute; width:22px; height:22px; border:2.5px solid var(--cream);
+  }
+  .vf::before{ left:-2px; top:-2px; border-right:0; border-bottom:0 }
+  .vf::after{ right:-2px; top:-2px; border-left:0; border-bottom:0 }
+  .vf i::before{ left:-2px; bottom:-2px; border-right:0; border-top:0 }
+  .vf i::after{ right:-2px; bottom:-2px; border-left:0; border-top:0 }
+  .vf i{ position:absolute; inset:0 }
+  .vf b{ position:absolute; left:10px; top:8px; display:flex; align-items:center; gap:7px; font-size:12px; font-weight:500; color:var(--cream); letter-spacing:.04em }
+  .vf b::before{ content:""; width:9px; height:9px; border-radius:50%; background:#E05C4B }
+
+  /* Empty frames */
+  .frame{ border:1.5px dashed rgba(174,194,188,.6); border-radius:4px; background:rgba(246,241,231,.03); display:grid; place-items:center;
+    font-size:clamp(11px,1vw,14px); color:var(--sage) }
+
+  /* Chart */
+  .chart{ display:flex; align-items:flex-end; gap:3%; }
+  .bar{ flex:1 1 0; background:var(--sage); border-radius:3px 3px 0 0; height:0; transition:height var(--slow) var(--ease), background var(--mid) var(--ease) }
+  .bar.rest{ background:rgba(174,194,188,.45) }
+  .chart-title{ font-family:var(--serif); font-size:clamp(22px,2.8vw,40px); font-weight:500; letter-spacing:-.015em; line-height:1.1 }
+  .chart-title small{ display:block; font-family:var(--sans); font-size:clamp(12px,1vw,14px); font-weight:400; opacity:.75; margin-top:6px; letter-spacing:0 }
+
+  /* Questions */
+  .qs{ display:flex; flex-direction:column; justify-content:center; gap:clamp(10px,1.6vh,22px) }
+  .qs p{ margin:0; font-family:var(--serif); font-style:italic; font-size:clamp(20px,2.6vw,38px); line-height:1.15; opacity:0; transform:translateY(8px);
+    transition:opacity var(--mid) var(--ease), transform var(--mid) var(--ease); color:var(--leaf) }
+  .qs p.on{ opacity:1; transform:none }
+
+  /* Reveal */
+  .line{ height:2px; background:var(--green); border-radius:2px; transform-origin:left center }
+  .totals{ display:flex; gap:clamp(14px,3vw,52px); flex-wrap:wrap; font-size:clamp(11px,1.1vw,16px); white-space:nowrap; align-items:baseline }
+  .totals span{ display:flex; align-items:baseline; gap:8px }
+  .totals b{ font-family:var(--serif); font-weight:500; font-size:2.4em; letter-spacing:-.015em }
+  .recreate .ph figcaption{ font-size:clamp(10px,.85vw,12px); padding:4px 7px; left:6px; bottom:6px }
+  @media (max-width:640px){ .recreate .ph figcaption{ display:none } }
+  .recreate{ display:flex; gap:2%; }
+  .recreate .ph{ position:relative; flex:1 1 0; height:100%; opacity:0; transform:translateY(10px); transition:opacity var(--mid) var(--ease), transform var(--mid) var(--ease) }
+  .recreate .ph.on{ opacity:1; transform:none }
+  .recreate .ph.src{ outline:2px solid var(--green); outline-offset:3px }
+  .tag{ font-size:clamp(11px,1vw,14px); font-weight:500; color:var(--green-mid); background:var(--cream-deep); padding:6px 10px; border-radius:4px; white-space:nowrap }
+
+  .end{ display:flex; flex-direction:column; justify-content:center; gap:clamp(14px,2.4vh,28px); pointer-events:none }
+  .end.on{ pointer-events:auto }
+  .end h2{ margin:0; font-family:var(--serif); font-weight:500; letter-spacing:-.02em; line-height:1.02; font-size:clamp(30px,5vw,76px); max-width:14ch }
+  .end p{ margin:0; font-size:clamp(14px,1.25vw,18px); line-height:1.5; max-width:48ch; opacity:.85 }
+  .end .cta{ display:flex; flex-wrap:wrap; gap:12px; margin-top:4px }
+  .btn{ display:inline-flex; align-items:center; gap:8px; padding:14px 20px; border-radius:6px; font:500 clamp(14px,1.15vw,17px)/1 var(--sans);
+    text-decoration:none; color:var(--cream); background:var(--green); border:1.5px solid var(--green); transition:background var(--fast), color var(--fast) }
+  .btn:hover{ background:var(--green-mid) }
+  .btn.ghost-btn{ background:transparent; color:var(--green) }
+  .btn.ghost-btn:hover{ background:var(--cream-deep) }
+  .btn:focus-visible{ outline:3px solid var(--leaf); outline-offset:3px }
+
+  .note{ font-size:clamp(11px,.9vw,13px); opacity:0; max-width:40ch; line-height:1.4; margin:0; }
+  .note.on{ opacity:.7 }
+
+  /* Caption */
+  .caption-box{ flex:0 0 auto; height:calc(3.3em * 1.12 + 20px); font-size:clamp(20px,2.7vw,38px); padding:10px var(--gutter) 10px; }
+  .caption{
+    margin:0; font-family:var(--serif); font-weight:400; letter-spacing:-.01em;
+    font-size:inherit; line-height:1.12; max-width:36ch;
+    transition:opacity var(--fast) var(--ease), transform var(--fast) var(--ease);
+  }
+  .caption.swap{ opacity:0; transform:translateY(6px) }
+  .caption.big{ font-size:1.3em; max-width:24ch; line-height:1.06 }
+
+  /* Controls */
+  .controls{ display:flex; align-items:center; gap:10px; padding:10px var(--gutter) 16px; flex-wrap:wrap }
+  .controls button{
+    appearance:none; border:1.5px solid currentColor; background:transparent; color:inherit; border-radius:6px;
+    padding:9px 12px; font:500 14px/1 var(--sans); cursor:pointer; display:inline-flex; align-items:center; gap:7px;
+    transition:background var(--fast), opacity var(--fast);
+  }
+  .controls button:hover{ background:rgba(127,127,127,.12) }
+  .controls button:focus-visible{ outline:3px solid var(--leaf); outline-offset:2px }
+  .controls button svg{ width:14px; height:14px; fill:currentColor }
+  .controls button.is-on{ color:var(--paper); background:var(--ink); border-color:var(--ink) }
+  .controls button.is-on:hover{ background:var(--ink); opacity:.85 }
+  .chapters{ display:flex; gap:4px; flex:1 1 auto; min-width:0; margin-left:6px; overflow-x:auto; scrollbar-width:none }
+  .chapters::-webkit-scrollbar{ display:none }
+  .chapters button{ border:0; padding:8px 10px; opacity:.55; position:relative; white-space:nowrap; flex:0 0 auto }
+  .chapters button[aria-current="step"]{ opacity:1 }
+  .chapters button i{ position:absolute; left:10px; right:10px; bottom:2px; height:2px; background:currentColor; opacity:.25; border-radius:2px }
+  .chapters button i b{ position:absolute; left:0; top:0; bottom:0; width:0; background:currentColor; border-radius:2px }
+  .chapters button[aria-current="step"] i{ opacity:1 }
+  .chapters button[aria-current="step"] i b{ opacity:1 }
+  .kbd{ font-size:12px; opacity:.55; margin-left:auto; white-space:nowrap }
+  @media (max-width:760px){ .kbd{display:none} .chapters button{ padding:8px 8px; font-size:13px } .controls{gap:6px} }
+
+  .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap }
+
+  @media (prefers-reduced-motion: reduce){
+    .app, .stage > *, .tile, .ph img, .bar, .qs p, .recreate .ph, .caption, .ph figcaption{ transition-duration:1ms !important }
+  }
+  .app.rm .stage > *, .app.rm .tile, .app.rm .ph img, .app.rm .bar, .app.rm .qs p, .app.rm .recreate .ph, .app.rm .caption, .app.rm, .app.rm .ph figcaption{ transition-duration:1ms !important }
+</style>
+</head>
+<body>
+<div class="app" id="app" data-scene="1" data-act="light">
+  <header class="brand">athletestories <small>A personal story of your athletic experience</small></header>
+
+  <main class="stage" id="stage" aria-label="Animated introduction">
+    <div class="tiles" id="tiles" aria-hidden="true"></div>
+    <div class="tally" id="tally" aria-hidden="true">
+      <span><b id="t-rides">0</b> rides</span>
+      <span><b id="t-miles">0</b> miles</span>
+      <span><b id="t-hours">0</b> hours training</span>
+    </div>
+
+    <figure class="ph" id="ph-why"><img src="assets/v2-training.jpg" alt="Alex riding his charcoal road bike along a leafy road in a teal jersey."><figcaption>Making time for it</figcaption></figure>
+    <figure class="ph" id="ph-rack"><img src="assets/v2-pregame.jpg" alt="Alex and a friend fit a bike rack to the back of a car the day before the ride."><figcaption>The day before</figcaption></figure>
+    <figure class="ph" id="ph-pause"><img src="assets/seq-photo-05.jpg" alt="Alex resting on a bench with a snack and water bottle, his bike beside him."><figcaption>Feeling the miles</figcaption></figure>
+    <figure class="ph" id="ph-finish"><img src="assets/seq-photo-10.jpg" alt="First-person view approaching the finish stripe with four friends cheering behind a railing and a Go Alex sign."><figcaption>They were waiting at the finish</figcaption></figure>
+    <figure class="ph" id="ph-start"><img src="assets/v2-start.jpg" alt="Alex waits with his bike among other riders at an early-morning start."><figcaption>Starting alone</figcaption></figure>
+    <figure class="ph" id="ph-pizza"><img src="assets/seq-photo-11.jpg" alt="Alex and four friends eating pizza at an outdoor beer-garden table."><figcaption>Accomplished, tired, and supported</figcaption></figure>
+
+    <div class="silo" id="silo-a"><span>Ride computer</span></div>
+    <div class="silo" id="silo-b"><span>Phone app</span></div>
+    <div class="silo" id="silo-c"><span>Indoor trainer</span></div>
+    <div class="ghost" id="ghost">?</div>
+    <figure class="ph" id="ph-desk"><img src="assets/silo-desk.jpg" alt="A desk with a ride computer, a phone, a tablet and printed photos, each showing a different part of the training."></figure>
+
+    <figure class="ph" id="ph-play"><img src="assets/moment-play.jpg" alt="A player running toward the goal in front of a crowd at sunset."></figure>
+    <div class="mask" id="mask" aria-hidden="true"></div>
+    <div class="vf" id="vf" aria-hidden="true"><i></i><b>REC</b></div>
+    <figure class="ph" id="ph-react"><img src="assets/moment-reactions.jpg" alt="Supporters in the stands and at home cheering, arms raised."></figure>
+    <figure class="ph" id="ph-still"><img src="assets/photo-finish.jpg" alt="A single photograph of a runner crossing a finish line with arms raised."></figure>
+    <div class="frame" id="fr-1">before</div>
+    <div class="frame" id="fr-2">before</div>
+    <div class="frame" id="fr-3">after</div>
+    <div class="frame" id="fr-4">after</div>
+
+    <div class="chart-title" id="chart-title">2,836.5 miles<small>Weekly miles, from every ride</small></div>
+    <div class="chart" id="chart" aria-hidden="true"></div>
+    <div class="qs" id="qs">
+      <p>What did it take to keep showing up?</p>
+      <p>Who was waiting at the finish?</p>
+      <p>Why did this one matter?</p>
+    </div>
+
+    <div class="line" id="line"></div>
+    <div class="totals" id="totals" aria-hidden="true">
+      <span><b>75</b>rides</span><span><b>20</b>weeks</span><span><b>2,836.5</b>miles</span><span><b>186h 34m</b>training</span>
+    </div>
+    <div class="recreate" id="recreate" aria-label="Generated recreation example">
+      <figure class="ph src"><img src="assets/recreate-1.jpg" alt="Source still: a cyclist riding toward the camera on a tree-lined road."><figcaption>Source photo</figcaption></figure>
+      <figure class="ph"><img src="assets/recreate-2.jpg" alt="Generated still: the cyclist crossing the finish line in profile."><figcaption>Generated: the finish</figcaption></figure>
+      <figure class="ph"><img src="assets/recreate-3.jpg" alt="Generated still: the cyclist pausing afterward, smiling."><figcaption>Generated: the pause after</figcaption></figure>
+    </div>
+
+    <div class="end" id="end">
+      <h2>Your effort deserves a story you can review, relive, and share with others.</h2>
+      <p>athletestories works with you and supports you in bringing your whole journey together: your effort, your why, the ups, the downs, the moments in between, and the people who supported and cheered you on. All in one place and experience.</p>
+      <div class="cta">
+        <a class="btn" id="cta-alex" href="#">Explore Alex's journey through his eyes</a>
+        <a class="btn ghost-btn" id="cta-own" href="#">Share your own</a>
+      </div>
+    </div>
+
+    <p class="note" id="note"></p>
+  </main>
+
+  <div class="caption-box"><p class="caption" id="caption" aria-live="polite"></p></div>
+
+  <nav class="controls" aria-label="Playback">
+    <button id="b-replay" title="Replay from the start (R)"><svg viewBox="0 0 16 16"><path d="M8 3V0L4 4l4 4V5a4 4 0 1 1-4 4H2a6 6 0 1 0 6-6z"/></svg>Replay</button>
+    <button id="b-prev" title="Previous scene (left arrow)" aria-label="Previous scene"><svg viewBox="0 0 16 16"><path d="M11 2 5 8l6 6z"/></svg></button>
+    <button id="b-play" title="Pause or play (space)" aria-label="Pause"><svg id="i-pause" viewBox="0 0 16 16"><path d="M3 2h4v12H3zM9 2h4v12H9z"/></svg><svg id="i-play" viewBox="0 0 16 16" style="display:none"><path d="M4 2l10 6-10 6z"/></svg><span id="b-play-label">Pause</span></button>
+    <button id="b-next" title="Next scene (right arrow)" aria-label="Next scene"><svg viewBox="0 0 16 16"><path d="M5 2l6 6-6 6z"/></svg></button>
+    <button id="b-loop" title="Play continuously (L)" aria-pressed="true"><svg viewBox="0 0 16 16"><path d="M4 5h7V3l3 3-3 3V7H4zm8 6H5v2L2 10l3-3v2h7z"/></svg>Loop</button>
+    <div class="chapters" id="chapters" role="list"></div>
+    <span class="kbd">Space pauses · arrows move · 1 to 0 jump · R replays · L loops</span>
+  </nav>
+</div>
+
+<script>
+(() => {
+  // ---------- Configuration ----------
+  // Final destinations. Both must be checked in the deployment environment before the booth.
+  const DEST_ALEX = "/stp/";               // Alex's curated journey on this site
+  const DEST_OWN  = "/";                   // the share-your-own flow on this site
+  const SCENE_MS = 5000;          // every chapter lasts this long
+  const LOOP_DEFAULT = true;      // play continuously; the Loop button in the controls toggles it
+
+  // Synthetic training ledger for Alex: [week, "MM-DD", tenths of a mile, moving seconds, type l/s/e]
+  const RIDES = [[1,"02-21",342,8040,"l"],[1,"02-24",184,4860,"e"],[1,"02-26",221,4860,"s"],[2,"02-28",405,9180,"l"],[2,"03-02",162,4500,"e"],[2,"03-03",248,5700,"s"],[2,"03-05",193,4380,"s"],[3,"03-07",467,11160,"l"],[3,"03-09",181,4800,"e"],[3,"03-10",264,5880,"s"],[3,"03-12",216,4740,"s"],[4,"03-14",308,7080,"l"],[4,"03-17",146,3720,"e"],[4,"03-19",192,4500,"s"],[5,"03-21",524,12660,"l"],[5,"03-23",201,5460,"e"],[5,"03-24",286,6420,"s"],[5,"03-26",233,5160,"s"],[6,"03-28",602,13980,"l"],[6,"03-30",187,4860,"e"],[6,"03-31",314,6780,"s"],[6,"04-02",249,5820,"s"],[7,"04-04",685,16800,"l"],[7,"04-06",226,6240,"e"],[7,"04-07",331,7560,"s"],[7,"04-09",262,5880,"s"],[8,"04-11",436,10260,"l"],[8,"04-14",168,4440,"e"],[8,"04-16",242,5340,"s"],[9,"04-18",764,17280,"l"],[9,"04-20",243,6780,"e"],[9,"04-21",357,8220,"s"],[9,"04-23",276,6300,"s"],[10,"04-25",821,19560,"l"],[10,"04-27",204,5460,"e"],[10,"04-28",372,8280,"s"],[10,"04-30",298,6540,"s"],[11,"05-02",887,20340,"l"],[11,"05-04",256,6540,"e"],[11,"05-05",391,9120,"s"],[11,"05-07",304,7020,"s"],[12,"05-09",552,13320,"l"],[12,"05-12",185,4980,"e"],[12,"05-14",273,6120,"s"],[13,"05-16",963,22380,"l"],[13,"05-18",262,6780,"e"],[13,"05-19",416,9000,"s"],[13,"05-21",327,7620,"s"],[14,"05-23",1048,25680,"l"],[14,"05-25",241,6600,"e"],[14,"05-26",432,9840,"s"],[14,"05-28",345,7740,"s"],[15,"05-30",1126,26520,"l"],[15,"05-31",283,7440,"e"],[15,"06-02",451,9900,"s"],[15,"06-03",358,7740,"s"],[15,"06-04",164,4560,"e"],[16,"06-06",647,14640,"l"],[16,"06-09",202,5640,"e"],[16,"06-11",294,6780,"s"],[17,"06-13",1224,29160,"l"],[17,"06-15",306,8160,"e"],[17,"06-16",463,10260,"s"],[17,"06-18",371,8160,"s"],[18,"06-20",945,21660,"l"],[18,"06-22",247,6300,"e"],[18,"06-23",384,9000,"s"],[18,"06-25",289,6660,"s"],[19,"06-27",623,14400,"s"],[19,"06-29",186,5040,"e"],[19,"06-30",278,6240,"s"],[19,"07-02",205,4560,"s"],[20,"07-04",304,7980,"e"],[20,"07-06",142,3660,"e"],[20,"07-08",181,4620,"e"]];
+  const WEEKS = 20;
+  const weekMiles = Array.from({length:WEEKS}, (_,w) => RIDES.filter(r => r[0] === w+1).reduce((a,r) => a + r[2]/10, 0));
+  const maxWeek = Math.max(...weekMiles);
+
+  // ---------- DOM ----------
+  const $ = id => document.getElementById(id);
+  const app = $("app"), stage = $("stage"), tilesEl = $("tiles"), caption = $("caption"), note = $("note");
+  const el = {};
+  ["tally","ph-why","ph-rack","ph-pause","ph-finish","ph-start","ph-pizza","silo-a","silo-b","silo-c","ghost","ph-desk",
+   "ph-play","vf","mask","ph-react","ph-still","fr-1","fr-2","fr-3","fr-4","chart-title","chart","qs","line","totals","recreate","end"]
+   .forEach(id => el[id] = $(id));
+  $("cta-alex").href = DEST_ALEX; $("cta-own").href = DEST_OWN;
+
+  const RM = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (RM) app.classList.add("rm");
+
+  // Tiles
+  const tiles = RIDES.map((r, i) => {
+    const t = document.createElement("div");
+    t.className = "tile src-" + r[4] + (r[4] === "l" ? " long" : "");
+    t.dataset.i = i; tilesEl.appendChild(t); return t;
+  });
+  // Bars
+  const bars = weekMiles.map(m => { const b = document.createElement("div"); b.className = "bar"; b.style.setProperty("--m", m); el.chart.appendChild(b); return b; });
+  // Deterministic scatter vectors for the question scene
+  const seed = (n) => { const x = Math.sin(n * 9301 + 49297) * 233280; return x - Math.floor(x); };
+  const drift = RIDES.map((_, i) => ({ dx: (seed(i) - .5) * 2, dy: (seed(i + 100) - .5) * 2 }));
+
+  // ---------- Geometry helpers ----------
+  let W = 0, H = 0, portrait = false;
+  function measure(){ W = stage.clientWidth; H = stage.clientHeight; portrait = W < H * 1.05; }
+  function place(e, x, y, w, h, opts = {}) {
+    e.style.left = x + "px"; e.style.top = y + "px";
+    if (w != null) e.style.width = w + "px";
+    if (h != null) e.style.height = h + "px";
+    e.style.transform = opts.tf || "";
+    e.style.filter = opts.filter || "";
+    e.style.zIndex = opts.z != null ? opts.z : "";
+    e.classList.toggle("on", !!opts.on);
+    e.classList.toggle("labeled", !!opts.label);
+    e.classList.toggle("shade", !!opts.shade);
+  }
+  function hideAll(){ Object.values(el).forEach(e => e.classList.remove("on","labeled","shade")); }
+  function tilePlace(t, x, y, s, cls = "", h = s) {
+    t.style.left = x + "px"; t.style.top = y + "px"; t.style.width = s + "px"; t.style.height = h + "px";
+    t.classList.remove("dim","faint"); if (cls) t.classList.add(cls);
+  }
+  // Calendar layout: 20 columns (weeks) x 5 rows, or 10 x 8 in portrait
+  function calendar() {
+    const cols = portrait ? 10 : WEEKS, rows = portrait ? 8 : 5;
+    // calendar cells are taller than wide, so the grid fills the stage's height as well as its width
+    const ratio = portrait ? 1.15 : 1.5;
+    const gx = portrait ? W * 0.94 : W * 0.7, gy = portrait ? H * 0.6 : H * 0.9;
+    const s = Math.floor(Math.min(gx / cols, gy / rows / ratio) * 0.8);
+    const sh = Math.round(s * ratio);
+    const gap = Math.max(3, Math.round(s * 0.25));
+    const gw = cols * s + (cols - 1) * gap, gh = rows * sh + (rows - 1) * gap;
+    const ox = portrait ? (W - gw) / 2 : W - gw - W * 0.03, oy = portrait ? H * 0.04 : (H - gh) / 2;
+    const pos = RIDES.map((r, i) => {
+      let c, rr;
+      if (portrait) { c = i % cols; rr = Math.floor(i / cols); }
+      else { c = r[0] - 1; rr = RIDES.slice(0, i).filter(q => q[0] === r[0]).length; }
+      return { x: ox + c * (s + gap), y: oy + rr * (sh + gap) };
+    });
+    return { s, sh, pos, ox, oy, gw, gh, gap };
+  }
+  function cover(x, y, w, h) { return { x, y, w, h }; }
+
+  // ---------- Captions ----------
+  let capState = "";
+  function setCaption(text, big = false) {
+    const key = text + (big ? "#" : "");
+    if (capState === key) return;
+    capState = key;
+    caption.classList.add("swap");
+    setTimeout(() => { caption.textContent = text; caption.classList.toggle("big", big); caption.classList.remove("swap"); }, RM ? 0 : 260);
+  }
+  function setNote(text) { note.textContent = text; note.classList.toggle("on", !!text); }
+  function at(t, pairs) { // pairs: [[startMs, text], ...] returns the latest text whose start <= t
+    let out = pairs[0][1]; for (const [s, txt] of pairs) if (t >= s) out = txt; return out;
+  }
+
+  // ---------- Scenes (each 5 seconds) ----------
+  const D = SCENE_MS;
+  const scenes = [
+  { id: "effort", name: "Effort", dur: D, act: "light",
+    apply() {
+      const c = calendar();
+      tiles.forEach((t, i) => tilePlace(t, c.pos[i].x, c.pos[i].y, c.s, "", c.sh));
+      const tx = portrait ? c.ox : W * 0.03, ty = portrait ? c.oy + c.gh + 24 : c.oy + 6;
+      place(el.tally, tx, ty, null, null, { on: true });
+    },
+    update(t) {
+      const n = Math.min(75, Math.floor(t / 48));            // all 75 rides on screen by about 3.6 s
+      let miles = 0, secs = 0;
+      tiles.forEach((tile, i) => { const on = i < n; tile.classList.toggle("on", on); if (on) { miles += RIDES[i][2]/10; secs += RIDES[i][3]; } });
+      $("t-rides").textContent = n;
+      $("t-miles").textContent = miles.toLocaleString("en-US", { maximumFractionDigits: 1 });
+      $("t-hours").textContent = Math.floor(secs / 3600);
+      setCaption("From amateur to professional, athletes put time and effort into preparing for what they accomplish.");
+    }
+  },
+  { id: "why", name: "Why", dur: D, act: "light",
+    apply() {
+      const c = calendar(); const f = 24;                      // the ride that opens into the photograph
+      tiles.forEach((t, i) => { tilePlace(t, c.pos[i].x, c.pos[i].y, c.s, i === f ? "" : "dim", c.sh); t.classList.add("on"); });
+      place(el.tally, portrait ? c.ox : W * 0.03, portrait ? c.oy + c.gh + 24 : c.oy + 6, null, null, { on: false });
+      const pw = portrait ? W * 0.94 : Math.min(W * 0.5, H * 1.3), ph = portrait ? pw * 0.66 : Math.min(H * 0.9, pw * 0.66);
+      const px = W * 0.03, py = portrait ? H * 0.02 : (H - ph) / 2;
+      place(el["ph-why"], px, py, pw, ph, { on: true, z: 3 });
+    },
+    enter() { // start from the tile position so the growth reads as the tile opening
+      const c = calendar(); const p = c.pos[24];
+      el["ph-why"].style.transition = "none"; place(el["ph-why"], p.x, p.y, c.s, c.sh, { on: false });
+      void el["ph-why"].offsetWidth; el["ph-why"].style.transition = "";
+    },
+    update(t) {
+      setCaption(at(t, [[0, "That effort comes from somewhere."],
+                        [1700, "Alex had been away from riding. Then, on one ride, he felt he was back."]]));
+    }
+  },
+  { id: "support", name: "Support", dur: D, act: "light",
+    apply() {
+      const c = calendar();
+      tiles.forEach((t, i) => { tilePlace(t, c.pos[i].x, c.pos[i].y, c.s, "faint", c.sh); t.classList.add("on"); });
+      if (portrait) {
+        const w = W * 0.46, h = w * 0.72, g = W * 0.04;
+        place(el["ph-why"],    g,          H * 0.02,          w, h, { on: true, label: true });
+        place(el["ph-rack"],   g*2 + w,    H * 0.02,          w, h, { on: true, label: true });
+        place(el["ph-pause"],  g,          H * 0.02 + h + g,  w, h, { on: true, label: true });
+        place(el["ph-finish"], g*2 + w,    H * 0.02 + h + g,  w, h, { on: true, label: true });
+      } else {
+        const h = H * 0.47, w = Math.min(h * 1.38, W * 0.3), g = W * 0.015, x0 = W * 0.03, y0 = H * 0.02;
+        place(el["ph-why"],    x0,            y0,          w, h, { on: true, label: true });
+        place(el["ph-rack"],   x0 + w + g,    y0,          w, h, { on: true, label: true });
+        place(el["ph-pause"],  x0,            y0 + h + g,  w, h, { on: true, label: true });
+        place(el["ph-finish"], x0 + w + g,    y0 + h + g,  w, h, { on: true, label: true });
+      }
+    },
+    update(t) {
+      const shown = t < 500 ? 1 : t < 1000 ? 2 : t < 1500 ? 3 : 4;
+      ["ph-why","ph-rack","ph-pause","ph-finish"].forEach((id, i) => el[id].classList.toggle("on", i < shown));
+      setCaption(at(t, [[0, "Chances are, you did not do this completely alone."],
+                        [2200, "Friends took his rack down the day before, checked on him mid-ride, and waited at the finish."]]));
+    }
+  },
+  { id: "question", name: "Question", dur: D, act: "dark",
+    apply() {
+      const c = calendar();
+      tiles.forEach((t, i) => { const d = drift[i]; tilePlace(t, c.pos[i].x + d.dx * W * 0.25, c.pos[i].y + d.dy * H * 0.35, c.s, "dim", c.sh); t.classList.add("on"); });
+      const ids = ["ph-why","ph-rack","ph-pause","ph-finish"]; const vec = [[-1,-1],[1,-1],[-1,1],[1,1]];
+      const w = portrait ? W * 0.34 : W * 0.18, h = w * 0.7;
+      ids.forEach((id, i) => place(el[id], W/2 - w/2 + vec[i][0] * W * (portrait ? 0.3 : 0.38), H/2 - h/2 + vec[i][1] * H * 0.36, w, h, { on: true, shade: true }));
+    },
+    update(t) { setCaption("But where can you go to see or share all of this today?", true); }
+  },
+  { id: "silos", name: "Scattered", dur: D, act: "dark",
+    apply() {
+      ["ph-why","ph-rack","ph-pause","ph-finish"].forEach(id => el[id].classList.remove("on"));
+      place(el["ph-desk"], 0, 0, W, H, { on: true, shade: true, z: 0, filter: "brightness(.55)" });
+      const groups = { l: [], s: [], e: [] }; RIDES.forEach((r, i) => groups[r[4]].push(i));
+      const silos = [["silo-a","l"],["silo-b","s"],["silo-c","e"]];
+      const sw = portrait ? W * 0.94 : W * 0.28, sh = portrait ? H * 0.2 : H * 0.52;
+      silos.forEach(([id, k], n) => {
+        const x = portrait ? W * 0.03 : W * 0.03 + n * (sw + W * 0.035), y = portrait ? H * 0.04 + n * (sh + H * 0.03) : H * 0.04;
+        place(el[id], x, y, sw, sh, { on: true, z: 2 });
+        const idx = groups[k], cols = portrait ? 12 : 6;
+        const s = Math.floor(Math.min((sw - 24) / cols, (sh - 44) / Math.ceil(idx.length / cols)) * 0.74), gap = Math.round(s * .3);
+        idx.forEach((i, j) => { const c = j % cols, r = Math.floor(j / cols); tilePlace(tiles[i], x + 12 + c * (s + gap), y + 36 + r * (s + gap), s); tiles[i].classList.add("on"); });
+      });
+      const gw = portrait ? W * 0.94 : W * 0.28, gh = portrait ? H * 0.16 : H * 0.34;
+      place(el.ghost, W * 0.03, portrait ? H * 0.04 + 3 * (sh + H * 0.03) : H * 0.04 + sh + H * 0.05, gw, gh, { on: true, z: 2 });
+    },
+    update(t) {
+      el.ghost.classList.toggle("on", t > 1600);
+      setCaption(at(t, [[0, "The records exist, but they are scattered."],
+                        [2000, "Each device holds part of it. No single place shows the whole preparation."]]));
+    }
+  },
+  { id: "frame", name: "Outside the frame", dur: D, act: "dark",
+    apply() {
+      ["silo-a","silo-b","silo-c","ghost","ph-desk"].forEach(id => el[id].classList.remove("on"));
+      tiles.forEach(t => t.classList.remove("on"));
+      const pw = portrait ? W : W * 0.62, ph = portrait ? H * 0.5 : H;
+      place(el["ph-play"], 0, 0, pw, ph, { on: true });
+      place(el.mask, 0, 0, pw, ph, { on: true, z: 2 });
+      place(el["ph-react"], portrait ? 0 : pw + W * 0.02, portrait ? ph + H * 0.02 : 0, portrait ? W : W - pw - W * 0.02, portrait ? H * 0.48 : H, { on: true, shade: true });
+    },
+    update(t) {
+      const pw = portrait ? W : W * 0.62, ph = portrait ? H * 0.5 : H;
+      const vw = pw * 0.36, vh = ph * 0.5;
+      const k = RM ? 0 : Math.sin(t / 900) * pw * 0.025;
+      const vx = pw * 0.52 - vw / 2 + k, vy = ph * 0.42 - vh / 2;
+      el.vf.style.transition = "none"; el.mask.style.transition = "opacity 700ms";
+      place(el.vf, vx, vy, vw, vh, { on: t > 300, z: 3 });
+      el.mask.style.clipPath = `polygon(evenodd, 0 0, 100% 0, 100% 100%, 0 100%, 0 0, ${vx}px ${vy}px, ${vx+vw}px ${vy}px, ${vx+vw}px ${vy+vh}px, ${vx}px ${vy+vh}px, ${vx}px ${vy}px)`;
+      el.mask.classList.toggle("on", t > 300);
+      el["ph-react"].classList.toggle("shade", t < 1800);
+      setCaption("The highlight follows the play. The people cheering sit outside the frame.");
+    }
+  },
+  { id: "photo", name: "One photograph", dur: D, act: "dark",
+    apply() {
+      ["ph-play","vf","mask","ph-react"].forEach(id => el[id].classList.remove("on"));
+      tiles.forEach(t => t.classList.remove("on"));
+      const fw = portrait ? W * 0.3 : Math.min(W * 0.17, H * 0.6), fh = portrait ? fw * 1.25 : Math.min(fw * 1.25, H * 0.8), g = portrait ? W * 0.03 : W * 0.02;
+      const cx = W / 2 - fw / 2, cy = H / 2 - fh / 2;
+      place(el["ph-still"], cx, cy, fw, fh, { on: true, z: 2 });
+      place(el["fr-1"], cx - 2 * (fw + g), cy, fw, fh, { on: false });
+      place(el["fr-2"], cx - 1 * (fw + g), cy, fw, fh, { on: false });
+      place(el["fr-3"], cx + 1 * (fw + g), cy, fw, fh, { on: false });
+      place(el["fr-4"], cx + 2 * (fw + g), cy, fw, fh, { on: false });
+    },
+    update(t) {
+      ["fr-1","fr-2","fr-3","fr-4"].forEach((id, i) => el[id].classList.toggle("on", t > 900 + i * 250));
+      if (portrait) { el["fr-1"].classList.remove("on"); el["fr-4"].classList.remove("on"); }
+      setCaption("Sometimes there is one photograph, and nothing of the moments before or after it.");
+    }
+  },
+  { id: "story", name: "Missing the story", dur: D, act: "dark",
+    apply() {
+      ["ph-still","fr-1","fr-2","fr-3","fr-4"].forEach(id => el[id].classList.remove("on"));
+      tiles.forEach(t => t.classList.remove("on"));
+      const cw = portrait ? W * 0.94 : W * 0.5, ch = portrait ? H * 0.3 : H * 0.66;
+      const cx = W * 0.03, cy = portrait ? H * 0.14 : H * 0.3;
+      place(el["chart-title"], cx, portrait ? H * 0.02 : H * 0.04, cw, null, { on: true });
+      place(el.chart, cx, cy, cw, ch, { on: true });
+      place(el.qs, portrait ? W * 0.03 : W * 0.58, portrait ? H * 0.5 : H * 0.06, portrait ? W * 0.94 : W * 0.4, portrait ? H * 0.46 : H * 0.88, { on: true });
+    },
+    update(t) {
+      bars.forEach((b, i) => { const on = t > 150 + i * 50; b.style.height = on ? (weekMiles[i] / maxWeek * 100) + "%" : "0%"; b.classList.toggle("rest", weekMiles[i] < 90); });
+      [...el.qs.children].forEach((p, i) => p.classList.toggle("on", t > 1500 + i * 900));
+      setCaption(at(t, [[0, "Numbers and highlights show the work."],
+                        [1800, "They do not explain who you are, the ups, the downs, or why it mattered."]]));
+    }
+  },
+  { id: "reveal", name: "athletestories", dur: D, act: "end",
+    apply() {
+      ["chart-title","chart","qs","end"].forEach(id => el[id].classList.remove("on"));
+      journeyLayout(false);
+    },
+    update(t) {
+      el.totals.classList.toggle("on", t > 300);
+      el.line.classList.toggle("on", t > 600);
+      ["ph-why","ph-rack","ph-start","ph-finish","ph-pizza"].forEach((id, i) => el[id].classList.toggle("on", t > 900 + i * 300));
+      el.recreate.classList.toggle("on", t > 2400);
+      [...el.recreate.children].forEach((f, i) => f.classList.toggle("on", t > 2500 + i * 300));
+      setCaption(at(t, [[0, "athletestories works with you and supports you in bringing your whole journey together."],
+                        [2600, "Your effort, your why, the ups, the downs, the moments in between, and the people who cheered you on."]]));
+    }
+  },
+  { id: "explore", name: "Explore", dur: D, act: "end",
+    apply() {
+      journeyLayout(true);
+      place(el.end, W * 0.02, 0, W * 0.96, H, { on: true, z: 6 });
+    },
+    update(t) { setCaption("Explore Alex's journey through his eyes – or share your own."); }
+  }];
+
+  // The journey layout shared by the last two scenes: totals, the line, the chapters, and every ride stacked into its week
+  function journeyLayout(faint) {
+    const lx = W * 0.03, lw = W * 0.94;
+    const ly = portrait ? H * 0.47 : H * 0.5;
+    place(el.line, lx, ly - 1, lw, 2, { on: !faint });
+    const base = portrait ? H * 0.97 : H * 0.96, colTop = ly + 16, k = (base - colTop) / maxWeek;
+    const cw = lw / WEEKS, tw = cw * 0.7;
+    const acc = new Array(WEEKS).fill(0);
+    tiles.forEach((t, i) => {
+      const w = RIDES[i][0] - 1, h = Math.max(2, RIDES[i][2] / 10 * k - 2);
+      acc[w] += RIDES[i][2] / 10 * k;
+      tilePlace(t, lx + w * cw + (cw - tw) / 2, base - acc[w], tw, faint ? "faint" : "", h); t.classList.add("on");
+    });
+    place(el.totals, lx, 0, lw, null, { on: false });
+    if (portrait) {
+      const pw = W * 0.3, ph = H * 0.13, g = W * 0.02, y1 = H * 0.16, y2 = y1 + ph + g;
+      [["ph-why",0,y1],["ph-rack",1,y1],["ph-start",2,y1],["ph-finish",0,y2],["ph-pizza",1,y2]].forEach(([id,c,y]) => place(el[id], lx + c * (pw + g), y, pw, ph, { on: false, label: true }));
+      place(el.recreate, lx + 2 * (pw + g), y2, pw, ph, { on: false });
+    } else {
+      const top = H * 0.14, ph = ly - 14 - top, g = W * 0.012, pw = (lw - g * 5) / 6.4;
+      ["ph-why","ph-rack","ph-start","ph-finish","ph-pizza"].forEach((id, c) => place(el[id], lx + c * (pw + g), top, pw, ph, { on: false, label: true }));
+      place(el.recreate, lx + 5 * (pw + g), top, lw - 5 * (pw + g), ph, { on: false });
+    }
+    [...el.recreate.children].forEach(f => { f.classList.add("labeled"); f.classList.remove("on"); });
+  }
+
+  // ---------- Playback ----------
+  let cur = 0, sceneT = 0, playing = true, autoAdvance = true, holding = false, last = 0, loop = LOOP_DEFAULT, overEnd = false;
+  const chaptersEl = $("chapters");
+  scenes.forEach((s, i) => {
+    const key = (i + 1) % 10;
+    const b = document.createElement("button"); b.type = "button"; b.setAttribute("role", "listitem");
+    b.innerHTML = (i + 1) + " " + s.name + "<i><b></b></i>"; b.title = "Jump to " + s.name + " (" + key + ")";
+    b.addEventListener("click", () => go(i, true)); chaptersEl.appendChild(b);
+  });
+  const chapterBtns = [...chaptersEl.children];
+  // the loop waits while someone is over the end card's buttons, so they can be clicked
+  const overCta = t => !!(t && t.closest && t.closest("#end .cta"));
+  document.addEventListener("pointermove", e => { overEnd = overCta(e.target) || overCta(document.activeElement); }, { passive: true });
+  document.addEventListener("pointerleave", () => { overEnd = overCta(document.activeElement); });
+  document.addEventListener("focusin", e => { overEnd = overCta(e.target); });
+  document.addEventListener("focusout", () => { overEnd = false; });
+  function refreshLoopBtn() { const b = $("b-loop"); b.setAttribute("aria-pressed", loop); b.classList.toggle("is-on", loop); }
+
+  function applyScene(i) {
+    measure(); hideAll();
+    app.dataset.scene = i + 1; app.dataset.act = scenes[i].act;
+    if (scenes[i].enter) scenes[i].enter();
+    scenes[i].apply();
+    chapterBtns.forEach((b, j) => b.toggleAttribute("aria-current", false) || (j === i ? b.setAttribute("aria-current", "step") : b.removeAttribute("aria-current")));
+  }
+  function go(i, manual = false) {
+    cur = (i + scenes.length) % scenes.length; sceneT = 0; holding = false;
+    if (manual) { autoAdvance = false; playing = true; }
+    applyScene(cur); scenes[cur].update(0); refreshPlayBtn();
+  }
+  function refreshPlayBtn() {
+    const b = $("b-play"), lbl = $("b-play-label");
+    const showPlay = !playing || holding;
+    $("i-pause").style.display = showPlay ? "none" : ""; $("i-play").style.display = showPlay ? "" : "none";
+    lbl.textContent = !playing ? "Play" : holding ? (cur === scenes.length - 1 ? "Replay" : "Continue") : "Pause";
+    b.setAttribute("aria-label", lbl.textContent);
+  }
+  function togglePlay() {
+    if (holding) { if (cur === scenes.length - 1) { autoAdvance = true; go(0); } else { autoAdvance = true; go(cur + 1); } return; }
+    playing = !playing; refreshPlayBtn();
+  }
+  function frame(now) {
+    const dt = Math.min(100, now - last); last = now;
+    if (playing && !holding) {
+      const lastScene = cur === scenes.length - 1;
+      if (!(lastScene && overEnd)) sceneT += dt;          // the end card waits while its buttons are in use
+      const s = scenes[cur];
+      if (sceneT >= s.dur) {
+        if (lastScene) { if (loop && autoAdvance) go(0); else { sceneT = s.dur; holding = true; refreshPlayBtn(); } }
+        else if (autoAdvance) { go(cur + 1); }
+        else { sceneT = s.dur; holding = true; refreshPlayBtn(); }
+      }
+      scenes[cur].update(sceneT);
+    }
+    // progress bars
+    chapterBtns.forEach((b, j) => { const fill = b.querySelector("b"); fill.style.width = j < cur ? "100%" : j === cur ? (Math.min(1, sceneT / scenes[cur].dur) * 100) + "%" : "0%"; });
+    requestAnimationFrame(frame);
+  }
+
+  // Controls
+  $("b-play").addEventListener("click", togglePlay);
+  $("b-prev").addEventListener("click", () => go(cur - 1, true));
+  $("b-next").addEventListener("click", () => go(cur + 1, true));
+  $("b-replay").addEventListener("click", () => { autoAdvance = true; playing = true; go(0); });
+  $("b-loop").addEventListener("click", () => { loop = !loop; refreshLoopBtn(); if (loop && holding && cur === scenes.length - 1) { autoAdvance = true; go(0); } });
+  document.addEventListener("keydown", e => {
+    if (e.target.tagName === "INPUT" || e.target.tagName === "TEXTAREA") return;
+    if (e.key === " ") { e.preventDefault(); togglePlay(); }
+    else if (e.key === "ArrowRight") go(cur + 1, true);
+    else if (e.key === "ArrowLeft") go(cur - 1, true);
+    else if (e.key === "Home") { autoAdvance = true; go(0); }
+    else if (e.key.toLowerCase() === "r") { autoAdvance = true; playing = true; go(0); }
+    else if (e.key.toLowerCase() === "l") { loop = !loop; refreshLoopBtn(); }
+    else if (/^[0-9]$/.test(e.key) && !e.metaKey && !e.ctrlKey) { const n = e.key === "0" ? 9 : Number(e.key) - 1; if (n < scenes.length) go(n, true); }
+  });
+  refreshLoopBtn();
+  let rt; addEventListener("resize", () => { clearTimeout(rt); rt = setTimeout(() => { applyScene(cur); scenes[cur].update(sceneT); }, 120); });
+
+  // Review hook: jump to a scene at a given time (used for screenshots during verification)
+  window.__seek = (i, t = 0, pause = true, auto = false) => { go(i, true); autoAdvance = auto; sceneT = t; playing = !pause; scenes[cur].update(t); refreshPlayBtn(); };
+
+  // Start
+  measure(); applyScene(0); scenes[0].update(0); refreshPlayBtn();
+  last = performance.now(); requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
